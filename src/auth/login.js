@@ -1,7 +1,6 @@
-import './App.css';
-import logo from './brain-bridge-logo.png';
-import google from './google.png';
-import people from './images/lovely-teenage-girl-with-curly-hair-posing-yellow-tshirt-min.png';
+import logo from '../brain-bridge-logo.png'
+import google from '../google.png'
+import { Link } from 'react-router-dom'
 
 export default function Login() {
     return (
@@ -22,7 +21,7 @@ export default function Login() {
                             <h2 className="text-center pb-1 text-xl font-medium mb-5">Sign in</h2>
                             <button className="border-solid border-[1px] border-gray-700 rounded-full block-inline flex justify-center w-fit px-7 py-3"><img src={google} className="pe-4" alt="google" />Continue with Google</button>
                         </div>
-                        <form className="px-16">
+                        <form className="px-12">
                             <h2 className="text-center pb-6 text-xl font-medium">Sign in with email</h2>
                             <div className='col-span-1'>
                                 <label for="email" className='block font-medium text-gray-900 text-start'>Email address</label>
@@ -37,7 +36,7 @@ export default function Login() {
                                 </div>
                             </div>
                             <div className="flex justify-center mt-6">
-                                <button type='submit' className="bg-[#48CAE4] py-3 px-7 rounded-3xl">Log in</button>
+                                <Link to="/admin"><button type='submit' className="bg-[#48CAE4] py-3 px-7 rounded-3xl">Log in</button></Link>
                             </div>
                         </form>
                     </div>
