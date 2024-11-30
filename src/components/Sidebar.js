@@ -1,11 +1,11 @@
 import { MoreVertical, ChevronLast, ChevronFirst } from "lucide-react";
 import { useContext, createContext, useState, useEffect } from "react";
-import logo from '../brain-bridge-logo.png'
+import logo from '../logo/white-logo.png'
 
 const SidebarContext = createContext();
 
-export default function Sidebar({ children }) {
-    const [expanded, setExpanded] = useState(true);
+export default function Sidebar({ children, expanded, setExpanded }) {
+    //const [expanded, setExpanded] = useState(true);
 
     // Detect screen size and set sidebar to collapsed on smaller screens
     useEffect(() => {
@@ -55,7 +55,7 @@ export function SidebarItem({ icon, text, active, alert }) {
         <li
             className={`relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group ${active
                 ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
-                : "hover:bg-indigo-50 text-white"
+                : "hover:bg-gradient-to-r hover:from-[#FFA62B] text-white"
                 }`}
         >
             {icon}

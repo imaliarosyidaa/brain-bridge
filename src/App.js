@@ -15,6 +15,7 @@ export default function App() {
         <Route path="signup" element={<Signup />} />
         <Route path="*" element={<Pagenotfound />} />
         <Route path="admin" element={<Dashboard />} />
+        <Route path="class/detail" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );
