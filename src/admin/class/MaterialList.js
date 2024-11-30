@@ -1,11 +1,9 @@
-import { UsersRound } from 'lucide-react';
-import { DoorClosed } from 'lucide-react';
 import { Link } from 'react-router-dom'
+import { Download, LucideBookDown } from "lucide-react";
 
 export default function MaterialList({ materials }) {
     return (
-        <div className='bg-[#48CAE4] rounded-md w-2/3 p-4 m-4'>
-            <h1 className='font-bold text-white pb-4'>Materials</h1>
+        <div className='rounded-md m-4 overflow-y-auto max-h-screen min-h-screen'>
             <div className='grid grid-cols-1 gap-4'>
                 {materials.map((material) => (<Material material={material} key={material.id} />))}
             </div>
@@ -15,16 +13,25 @@ export default function MaterialList({ materials }) {
 
 function Material({ material }) {
     return (
-            <Link to="/class/detail">
-                <div className="uppercase h-fit bg-[#FFD60A] shadow rounded-lg p-4 hover:shadow-md transition grid grid-cols-1 lg:grid-cols-6 content-between">
-                    <div className='col-span-5'>
-                            {material.title}
-                        <p className='lowercase'>{material.description}</p>
+        <div className="h-fit bg-[#FFD60A] shadow rounded-lg p-2 hover:shadow-md transition grid grid-cols-1 lg:grid-cols-4 gap-4">
+            <div className='col-span-2'>
+                <div className='flex items-center justify-start'>
+                    <div className='pr-2'>
+                        <LucideBookDown fill='#374957' color='#FFD60A' />
                     </div>
-                    <div  className='col-span-1'>
-                        <button>haloo</button>
+                    <p className='font-bold text-[#343A40]'>{material.title}</p>
+                </div>
+            </div>
+            <div className='col-span-2'>
+                <div className='flex items-center justify-end'>
+                    <div className='pr-2'>
+                        <Download />
+                    </div>
+                    <div>
+                        <button className="bg-white px-4 py-1 rounded-md">open</button>
                     </div>
                 </div>
-            </Link>
+            </div>
+        </div>
     );
 }
