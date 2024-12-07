@@ -1,7 +1,7 @@
-import Sidebar, { SidebarItem } from '../components/Sidebar'
-import Layout, { ContentArea } from "./Layout"
-import { useState } from "react"
-
+import Sidebar, { SidebarItem } from '../components/Sidebar';
+import Layout, { ContentArea } from "./ClassLayout";
+import { useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import {
     LayoutDashboard,
     Users,
@@ -13,32 +13,29 @@ import {
     Fingerprint,
     Settings,
     MessageCircleMore
-} from "lucide-react"
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+} from "lucide-react";
 
 export default function Dashboard() {
     const [expanded, setExpanded] = useState(true);
-    const navigate = useNavigate();
+    const [active, setActive] = useState(false);
 
-    function handleRoute(route) {
-        navigate(route)
+    function handleClick() {
+        setActive(true)
     }
 
     const sidebar = (
         <Sidebar expanded={expanded} setExpanded={setExpanded}>
-            <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" alert active="true" onClick={() => handleRoute('/')} />
-            <SidebarItem icon={<Users size={20} />} text="Class" alert></SidebarItem>
-            <SidebarItem icon={<CalendarDays size={20} />} text="Class Schedule" alert />
-            <SidebarItem icon={<ClipboardList size={20} />} text="Task" alert />
-            <SidebarItem icon={<FileBarChart size={20} />} text="Grades & Raports" alert />
-            <SidebarItem icon={<AlarmClock size={20} />} text="Study Plan" alert />
-            <SidebarItem icon={<BookCheckIcon size={20} />} text="E-Book Library" alert />
-            <SidebarItem icon={<Fingerprint size={20} />} text="Attendance" alert />
-            <SidebarItem icon={<Settings size={20} />} text="Profile" alert />
-            <SidebarItem icon={<MessageCircleMore size={20} />} text="Message" alert />
+            <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" alert routes={"/app"} active={active} onClickNav={handleClick} />
+            <SidebarItem icon={<Users size={20} />} text="Class" alert routes={"/class"} />
+            <SidebarItem icon={<ClipboardList size={20} />} text="Task" routes={"/task"} alert />
+            <SidebarItem icon={<FileBarChart size={20} />} text="Grades & Raports" routes={"/grades"} alert />
+            <SidebarItem icon={<BookCheckIcon size={20} />} text="E-Book Library" routes={"/library"} alert />
+            <SidebarItem icon={<Settings size={20} />} text="Profile" routes={"/profile"} alert />
+            {/* <h1 className='text-white text-xs px-3 pt-8 font-bold'>FORUM DISCUSSION</h1> */}
+            <SidebarItem icon={<MessageCircleMore size={20} />} text="Discussion Forum" routes={"/forum"} alert />
         </Sidebar>
     );
+
     return (
         <div className="flex h-screen">
             {sidebar}
@@ -46,9 +43,13 @@ export default function Dashboard() {
                 className={`transition-all duration-300 ${expanded ? "ml-64" : "ml-16"
                     } flex-1 bg-gray-50 overflow-auto`}
             >
-                <Layout className="container mx-auto p-4">
-                    <ContentArea />
-                </Layout>
+                <div className="flex h-screen container mx-auto p-4">
+                    <main className="flex-1 bg-gray-50 overflow-auto">
+                        <div className="container mx-auto p-4">
+                            <Outlet />
+                        </div>
+                    </main>
+                </div>
             </main>
         </div>
     );

@@ -8,7 +8,7 @@ export default function About() {
             <div className="pt-36 pb-9 px-8 text-center">
                 <div className='w-full'>
                     <h1 className="text-bold text-4xl"> <span className="text-[#48CAE4]">All-In-One in</span> <span className="text-[#F48C06]">Brain Bridge</span></h1>
-                    <p className="text-[#696984] px-44 pt-4">BrainBridge is a powerful e-learning platform that provides all the tools you need to succeed-bridging the gaps in education and empowering learning anywhere, from schools and communities to workplaces and beyond.</p>
+                    <p className="text-[#696984] lg:px-44 pt-4">BrainBridge is a powerful e-learning platform that provides all the tools you need to succeed-bridging the gaps in education and empowering learning anywhere, from schools and communities to workplaces and beyond.</p>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-12">
                     <div className="drop-shadow-2xl rounded-xl text-center p-8 bg-white flex flex-col items-center">

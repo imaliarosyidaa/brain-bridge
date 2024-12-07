@@ -3,17 +3,20 @@ import ss from '../logo/social-science.png'
 import wd from '../logo/website-development.png'
 import stat from '../logo/stat.png'
 import math from '../logo/math.png'
-import TopicList from './class/TopicList'
-import MeetingList from './class/MeetingList'
-import { Route, Routes } from 'react-router-dom'
-import AssesmentList from './class/AssesmentList'
-import VideoList from './class/VideoList'
+import book1 from "../logo/book-1.png"
+import book2 from "../logo/book-2.png"
+import book3 from "../logo/book-3.png"
+import book4 from "../logo/book-4.png"
+import book5 from "../logo/book-4.png"
+import TopicList from "../admin/class/ClassList"
+import MeetingList from '../admin/class/MeetingList'
+import VideoList from '../admin/class/VideoList'
 import VideoCover from '../logo/video-cover.png'
-import MaterialList from './class/MaterialList'
-import PreviewSection from './class/PreviewSection'
-import SummarySection from './class/SummarySection'
+import MaterialList from '../admin/class/MaterialList'
+import PreviewSection from '../admin/class/PreviewSection'
+import SummarySection from '../admin/class/SummarySection'
 
-const initialClass = [
+export const initialClass = [
     { id: 1, description: "Programming", quantity: 2, img: programming, color: "#E1E2F6", closed: false },
     { id: 2, description: "Social Science", quantity: 12, img: ss, color: "#F8EFE2", closed: false },
     { id: 3, description: "Website Development", quantity: 3, img: wd, color: "#F3E4FF", closed: true },
@@ -21,7 +24,7 @@ const initialClass = [
     { id: 5, description: "Matematics", quantity: 1, img: math, color: "#C0E0EF", closed: true },
 ];
 
-const initialMeeting = [
+export const initialMeeting = [
     {
         id: 1, title: "Dasar-Dasar JavaScript: Pondasi Pemrograman Web",
         description: "Materi ini mencakup pengenalan JavaScript, mulai dari cara kerja, sintaks dasar, hingga konsep fundamental seperti variabel, tipe data, operator, fungsi, dan pengendalian alur (if-else, loop)."
@@ -40,7 +43,7 @@ const initialMeeting = [
     },
 ];
 
-const initialAssesment = [
+export const initialAssesment = [
     {
         id: 1,
         title: "Tugas Pertemuan Pertama",
@@ -78,7 +81,7 @@ const initialAssesment = [
     }
 ];
 
-const initialVideos = [
+export const initialVideos = [
     {
         id: 1, title: "Part 1",
         cover: VideoCover
@@ -97,45 +100,44 @@ const initialVideos = [
     },
 ];
 
-const initialMaterials = [
+export const initialMaterials = [
     { id: 1, title: "Material 1" },
     { id: 2, title: "Material 2" },
     { id: 3, title: "Material 3" },
     { id: 4, title: "Material 4" },
 ];
 
-export default function Layout({ sidebar, children }) {
-    return (
-        <div className="flex h-screen">
-            <main className="flex-1 bg-gray-50 overflow-auto">
-                <div className="container mx-auto p-4">{children}</div>
-            </main>
-        </div>
-    );
-}
+export const initialBooks = [
+    { id: 1, title: "All Benefits of PLUS", img: book1, },
+    { id: 2, title: "Visible Learning", img: book2 },
+    { id: 3, title: "The New Rules", img: book3 },
+    { id: 4, title: "All Benefits of PLUS", img: book4 },
+    { id: 4, title: "All Benefits of PLUS", img: book5 },
+];
 
-export function ContentArea(pages) {
-    return (
-        <div>
-            {/* <TopicList topics={initialClass} /> */}
-            {/* <div className='flex'>
-                <MeetingList meetings={initialMaterials} />
-                <AssesmentList assessment={initialAssesment} />
-            </div> */}
-            <div className='max-h-screen grid grid-cols-3 grid-rows-2'>
-                <div className='row-span-2'>
-                    <VideoList videos={initialVideos} />
-                </div>
-                <div className='row-span-1'>
-                    <MaterialList materials={initialMaterials} />
-                </div>
-                <div className='row-span-2'>
-                    <PreviewSection />
-                </div>
-                <div className=''>
-                    <SummarySection />
-                </div>
-            </div>
-        </div>
-    );
-}
+export const sampleData = [
+    {
+        id: 1,
+        teacher: 'Imalia Rosyida',
+        class: 'Matematika',
+        averageScore: 85,
+    },
+    {
+        id: 2,
+        teacher: 'Ahmad Fauzi',
+        class: 'Fisika',
+        averageScore: 88,
+    },
+    {
+        id: 3,
+        teacher: 'Siti Aisyah',
+        class: 'Biologi',
+        averageScore: 90,
+    },
+];
+
+export const sampleTasks = [
+    { id: 1, name: 'Tugas 1', deadline: '2024-12-01', score: 85 },
+    { id: 2, name: 'Tugas 2', deadline: '2024-12-05', score: 90 },
+    { id: 3, name: 'Tugas 3', deadline: '2024-12-10', score: 75 },
+];
