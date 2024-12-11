@@ -1,13 +1,16 @@
 import React from 'react';
+import useAuth from '../../hooks/useAuth';
 
 export default function Dashboard() {
+    const { auth } = useAuth();
+
     return (
         <div className="bg-gray-100 min-h-screen">
             {/* Header */}
             <header className="bg-white shadow px-6 py-4 flex justify-between items-center">
                 <div className="flex items-center gap-4">
                     <button className="text-2xl">&#9776;</button>
-                    <h1 className="text-lg font-semibold">Hello Imalia, Welcome 👋</h1>
+                    <h1 className="text-lg font-semibold">Hello {auth.nama}, Welcome 👋</h1>
                 </div>
                 <input
                     type="text"

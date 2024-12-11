@@ -12,12 +12,16 @@ import {
     BookCheckIcon,
     Fingerprint,
     Settings,
-    MessageCircleMore
+    MessageCircleMore,
+    SquareChartGanttIcon,
+    UserCog2
 } from "lucide-react";
+import useAuth from '../hooks/useAuth';
 
 export default function Dashboard() {
     const [expanded, setExpanded] = useState(true);
     const [active, setActive] = useState(false);
+    const { auth } = useAuth();
 
     function handleClick() {
         setActive(true)
@@ -28,13 +32,32 @@ export default function Dashboard() {
             <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" alert routes={"/app"} active={active} onClickNav={handleClick} />
             <SidebarItem icon={<Users size={20} />} text="Class" alert routes={"/class"} />
             <SidebarItem icon={<ClipboardList size={20} />} text="Task" routes={"/task"} alert />
-            <SidebarItem icon={<FileBarChart size={20} />} text="Grades & Raports" routes={"/grades"} alert />
+            <SidebarItem icon={<FileBarChart size={20} />} text="Grades & Reports" routes={"/grades"} alert />
             <SidebarItem icon={<BookCheckIcon size={20} />} text="E-Book Library" routes={"/library"} alert />
-            <SidebarItem icon={<Settings size={20} />} text="Profile" routes={"/profile"} alert />
-            {/* <h1 className='text-white text-xs px-3 pt-8 font-bold'>FORUM DISCUSSION</h1> */}
+
+            {expanded && (
+                <div className="text-white text-sm px-4 pt-4 uppercase font-bold">
+                    Forum Discussion
+                </div>
+            )}
+
             <SidebarItem icon={<MessageCircleMore size={20} />} text="Discussion Forum" routes={"/forum"} alert />
+
+            {expanded && (
+                <div className="text-white text-sm px-4 pt-4 uppercase font-bold">
+                    Settings
+                </div>
+            )}
+            <SidebarItem icon={<Settings size={20} />} text="Profile" routes={"/profile"} alert />
+            {auth?.role === 'ADMIN' && (
+                <SidebarItem icon={<SquareChartGanttIcon size={20} />} text="Topics" routes={"/topic"} alert />
+            )}
+            {auth?.role === 'ADMIN' && (
+                <SidebarItem icon={<UserCog2 size={20} />} text="Users" routes={"/users"} alert />
+            )}
         </Sidebar>
     );
+
 
     return (
         <div className="flex h-screen">

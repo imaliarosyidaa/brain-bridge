@@ -46,8 +46,9 @@ export default function Signup() {
             let result = await response.json();
             localStorage.setItem('user-info', JSON.stringify(result));
             navigate('/login');
-        } catch (err) {
-            setError('Failed to connect to the server.');
+        } catch (error) {
+            console.error("Error response:", error.response?.data || error.message);
+            alert("Failed to add assessment. Please try again.");
         }
     }
 
@@ -57,7 +58,9 @@ export default function Signup() {
                 <div className="container mx-auto max-w-4xl rounded overflow-hidden shadow-lg bg-white p-8 lg:pt-6 lg:pb-10 lg:px-4">
                     <div className="flex content-center">
                         <div>
-                            <img src={logo} alt="logo" />
+                            <Link to="/">
+                                <img src={logo} alt="logo" />
+                            </Link>
                         </div>
                         <div className="text-start py-8 px-12">
                             <h1 className="text-[32px]">Create an account</h1>
@@ -69,7 +72,7 @@ export default function Signup() {
                             </p>
                         </div>
                     </div>
-                    <form className="px-16" onSubmit={signup}>
+                    <form className="px-16" onSubmit={signup} method='POST' >
                         {error && <p className="text-red-500">{error}</p>}
                         <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 divide-x">
                             <div className="col-span-3">

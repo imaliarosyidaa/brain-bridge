@@ -1,18 +1,44 @@
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { NotebookPenIcon, ArrowRight, BookOpen, Clock, PlusCircle } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import axios from '../../api/axios';
+import useAuth from '../../hooks/useAuth';
 
 export default function AssessmentList({ assessment }) {
+    const { auth } = useAuth();
+    const [assessments, setAssessments] = useState([]);
+    const { id } = useParams();
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await axios.get(`/api/assesment/class/${id}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: '*/*',
+                        Authorization: `Bearer ${auth.accessToken}`,
+                    },
+                    withCredentials: true,
+                });
+                setAssessments(response?.data);
+            } catch (error) {
+                console.error('Error fetching meetings:', error);
+            }
+        }
+        fetchData();
+    }, [id, auth.accessToken]);
+
     return (
         <div className="bg-[#48CAE4] max-h-screen rounded-md p-6 m-4 overflow-y-auto">
             <div className='flex items-center mb-4'>
                 <h1 className="font-bold text-white text-lg">Assesment</h1>
-                <Link to="/class/assesment/add" className='ml-2'>
+                <Link to={`/class/assesment/add/${id}`} className='ml-2'>
                     <PlusCircle fill='white' color='#48CAE4' />
                 </Link>
             </div>
             <div className="grid grid-cols-1 gap-6">
-                {assessment.map((item) => (
-                    <AssessmentItem assessment={item} key={item.id} />
+                {assessments.map((item, index) => (
+                    <AssessmentItem assessment={item} key={index} />
                 ))}
             </div>
         </div>
@@ -55,7 +81,7 @@ function AssessmentItem({ assessment }) {
                     <span className="p-2">
                         <Clock />
                     </span>
-                    {assessment.due_date}
+                    {assessment.deadline}
                 </div>
             </div>
         </Link>

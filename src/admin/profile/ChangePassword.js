@@ -1,18 +1,27 @@
 import { useState } from "react";
 import Tab from "./Tab";
+import { EyeIcon, EyeOff } from "lucide-react";
+import axios from "../../api/axios";
+import useAuth from "../../hooks/useAuth";
 
 export default function ChangePassword() {
-    // State to store form values
-    const [oldPassword, setOldPassword] = useState('');
+    const { auth } = useAuth();
+    const [oldPassword, setOldPassword] = useState(auth.password);
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+    const [message, setMessage] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
-    // Handler for form submission
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleReset = () => {
+        setOldPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+    };
 
-        // Basic validation
+    async function updatePassword(event) {
+        event.preventDefault();
+
         if (!oldPassword || !newPassword || !confirmPassword) {
             setError('All fields are required.');
             return;
@@ -23,41 +32,56 @@ export default function ChangePassword() {
             return;
         }
 
-        // Clear error message if validation passes
-        setError('');
-
-        // Call API or function to change password here
-        console.log('Password change request:', { oldPassword, newPassword });
-
-        // Provide success feedback (you could redirect or clear the form)
-        alert('Password changed successfully!');
-    };
-
-    const handleReset = () => {
-        setOldPassword("");
-        setNewPassword("");
-        setConfirmPassword("");
-    };
+        try {
+            const response = await axios.put('/api/profile/change-password',
+                JSON.stringify({
+                    oldPassword,
+                    newPassword,
+                    confirmPassword
+                }), {
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Accept": "*/*",
+                    Authorization: `Bearer ${auth.accessToken}`
+                },
+                withCredentials: true
+            }
+            );
+            setMessage(response?.data?.message)
+        } catch (error) {
+            console.error("Error response:", error.response?.data || error.message);
+            alert("update failed, please check your credentials.");
+        }
+    }
 
     return (
         <div className="max-w-4xl mx-auto p-6 bg-white shadow rounded-lg">
             <Tab />
-            <form onSubmit={handleSubmit}>
+
+            <form onSubmit={updatePassword} method="PUT">
                 <div className="mb-4">
                     <label htmlFor="oldPassword" className="block text-sm font-medium text-gray-600">Old Password</label>
-                    <input
-                        type="password"
-                        id="oldPassword"
-                        value={oldPassword}
-                        onChange={(e) => setOldPassword(e.target.value)}
-                        className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    />
+                    <div className="relative">
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            id="oldPassword"
+                            value={oldPassword}
+                            className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            readOnly
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                            className="absolute right-3 top-4 text-gray-600 focus:outline-none"
+                        >
+                            {showPassword ? <EyeOff /> : <EyeIcon />}
+                        </button>
+                    </div>
                 </div>
                 <div className="mb-4">
                     <label htmlFor="newPassword" className="block text-sm font-medium text-gray-600">New Password</label>
                     <input
-                        type="password"
+                        type="text"
                         id="newPassword"
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
@@ -68,7 +92,7 @@ export default function ChangePassword() {
                 <div className="mb-4">
                     <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-600">Confirm New Password</label>
                     <input
-                        type="password"
+                        type="text"
                         id="confirmPassword"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
@@ -78,12 +102,15 @@ export default function ChangePassword() {
                 </div>
 
                 {/* Display error messages */}
-                {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+                {error && <p className="text-red-500 text-sm my-2">{error}</p>}
+
+                {/* Display success messages */}
+                {message && <p className="text-green-700 text-sm my-4">{message}</p>}
 
                 {/* Buttons */}
                 <div className="flex space-x-4">
                     <button
-                        onClick={handleSubmit}
+                        type="submit"
                         className="px-6 py-2 bg-blue text-white rounded hover:bg-sky-500"
                     >
                         Change Password

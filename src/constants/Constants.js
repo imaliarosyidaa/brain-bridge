@@ -16,12 +16,12 @@ import MaterialList from '../admin/class/MaterialList'
 import PreviewSection from '../admin/class/PreviewSection'
 import SummarySection from '../admin/class/SummarySection'
 
-export const initialClass = [
-    { id: 1, description: "Programming", quantity: 2, img: programming, color: "#E1E2F6", closed: false },
-    { id: 2, description: "Social Science", quantity: 12, img: ss, color: "#F8EFE2", closed: false },
-    { id: 3, description: "Website Development", quantity: 3, img: wd, color: "#F3E4FF", closed: true },
-    { id: 4, description: "Statistic", quantity: 1, img: stat, color: "#EFF7E2", closed: true },
-    { id: 5, description: "Matematics", quantity: 1, img: math, color: "#C0E0EF", closed: true },
+export const initialAsset = [
+    { id: 1, img: programming, color: "#E1E2F6" },
+    { id: 2, img: ss, color: "#F8EFE2" },
+    { id: 3, img: wd, color: "#F3E4FF" },
+    { id: 4, img: stat, color: "#EFF7E2" },
+    { id: 5, img: math, color: "#C0E0EF" },
 ];
 
 export const initialMeeting = [

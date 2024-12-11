@@ -1,39 +1,54 @@
-import { useState } from 'react';
+import { useEffect, useState, useRef, useContext } from 'react';
 import logo from '../brain-bridge-logo.png';
 import google from '../google.png';
-import { useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
+import axios from '../api/axios';
+const LOGIN_URL = '/api/auth/login';
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [errMsg, setErrMsg] = useState('');
+    const userRef = useRef();
+    const errRef = useRef();
+
+    const { setAuth } = useAuth();
+
     const navigate = useNavigate();
+    const location = useLocation();
+    const defaultPath = "/app";
+    const from = location.state?.from?.pathname || defaultPath;
 
-    async function login(event) {
-        event.preventDefault();
-        console.warn(email, password);
+    useEffect(() => {
+        userRef.current.focus();
+    }, [])
 
-        let item = { email, password };
+    useEffect(() => {
+        setErrMsg('');
+    }, [email, password])
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
         try {
-            let response = await fetch("https://2dae-114-79-5-79.ngrok-free.app/api/auth/login", {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "*/*"
-                },
-                body: JSON.stringify(item)
-            });
-
-            if (!response.ok) {
-                throw new Error(`Login failed with status ${response.status}`);
-            }
-
-            let result = await response.json();
-            localStorage.setItem("user-info", JSON.stringify(result));
-            navigate("/app"); // Mengarahkan ke halaman berikutnya
+            const response = await axios.post(LOGIN_URL,
+                JSON.stringify({ email, password }),
+                {
+                    headers: { 'Content-Type': 'application/json', "Accept": "*/*" },
+                    withCredentials: true
+                }
+            );
+            const accessToken = response?.data?.jwt;
+            console.log(accessToken)
+            const role = response?.data?.role;
+            const nama = response?.data?.name;
+            console.log(role)
+            setAuth({ email, nama, password, role, accessToken });
+            setEmail('');
+            setPassword('');
+            navigate(from, { replace: true })
         } catch (error) {
-
-
             console.error("Login error:", error);
             alert("Login failed, please check your credentials.");
         }
@@ -41,11 +56,13 @@ export default function Login() {
 
     return (
         <div className="App">
-            <div className='register-page content-center min:h-screen min:h-max p-8 lg:py-9 w-full bg-gradient-to-b from-[#FFD60A] to-[#FFA62B]'>
+            <div className='register-page content-center h-screen max:h-max p-8 lg:py-9 w-full bg-gradient-to-b from-[#FFD60A] to-[#FFA62B]'>
                 <div className='container mx-auto max-w-4xl rounded overflow-hidden shadow-lg bg-white lg:pt-6 lg:pb-10 lg:px-4 p-8'>
                     <div className='flex content-center'>
                         <div>
-                            <img src={logo} alt="logo" />
+                            <Link to="/">
+                                <img src={logo} alt="logo" />
+                            </Link>
                         </div>
                         <div className='text-start py-8 px-12'>
                             <h1 className="text-[32px]">Sign In</h1>
@@ -60,7 +77,8 @@ export default function Login() {
                                 Continue with Google
                             </button>
                         </div>
-                        <form className="px-12" onSubmit={login}>
+                        <form className="px-12" onSubmit={handleSubmit} method='POST'>
+                            <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                             <h2 className="text-center pb-6 text-xl font-medium">Sign in with email</h2>
                             <div className='col-span-1'>
                                 <label htmlFor="email" className='block font-medium text-gray-900 text-start'>Email address</label>
@@ -69,7 +87,11 @@ export default function Login() {
                                         type="email"
                                         id="email"
                                         name="email"
+                                        ref={userRef}
+                                        autoComplete="off"
+                                        required
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                                        value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                     />
                                 </div>
@@ -82,6 +104,10 @@ export default function Login() {
                                         id="password"
                                         name="password"
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                                        value={password}
+                                        ref={userRef}
+                                        autoComplete="off"
+                                        required
                                         onChange={(e) => setPassword(e.target.value)}
                                     />
                                 </div>

@@ -27,45 +27,82 @@ import {
   initialMaterials,
   initialBooks,
   sampleData,
-  sampleTasks
+  sampleTasks,
+  initialAsset
 } from "./constants/Constants";
+import RequireAuth from './admin/RequireAuth';
+import BookDetail from "./admin/library/BookDetail";
+import AddClass from "./admin/class/AddClass";
+import AdminUsers from "./admin/users/Admin";
+import PengajarUsers from "./admin/users/Pengajar";
+import SiswaUsers from "./admin/users/Siswa";
+import Topics from "./admin/topics/Topics";
+
+const ROLES = {
+  'ADMIN': 'ADMIN',
+  'PENGAJAR': 'PENGAJAR',
+  'SISWA': 'SISWA'
+}
 
 export default function App() {
+
   return (
     <BrowserRouter>
       <Routes>
+        {/* Route public */}
         <Route path="/" element={<Homepage />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
+
+        {/* Chatch all */}
         <Route path="*" element={<Pagenotfound />} />
-        <Route path="app" element={<Dashboard />}>
-          <Route index element={<AppLayout />} />
+
+        {/* Protect route */}
+        <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN, ROLES.PENGAJAR, ROLES.SISWA]} />} >
+          <Route path="app" element={<Dashboard />}>
+            <Route index element={<AppLayout />} />
+          </Route>
+          <Route path="class" element={<Dashboard />}>
+            <Route index element={<ClassLayout assset={initialAsset} />} />
+            <Route path="add" element={<AddClass />} />
+            <Route path="meeting/:id" element={<DetailClassLayout meetings={initialMeeting} assessment={initialAssesment} />} />
+            <Route path="meeting/detail/:id" element={<DetailMeetingLayout videos={initialVideos} materials={initialMaterials} />} />
+            <Route path="assesment/detail" element={<AssesmentDetail />} />
+            <Route path="meeting/add/:id" element={<AddMeeting />} />
+            <Route path="assesment/add/:id" element={<AddAssesment />} />
+          </Route>
+          <Route path="task" element={<Dashboard />}>
+            <Route index element={<AssesmentList assessment={initialAssesment} />} />
+          </Route>
+          <Route path="library" element={<Library books={initialBooks} />} />
+          <Route path="books/:id" element={<BookDetail />} />
+          <Route path="forum" element={<Dashboard />}>
+            <Route index element={<DiscussionForum />} />
+          </Route>
+          <Route path="profile" element={<Dashboard />}>
+            <Route index element={<AccountSettings />} />
+          </Route>
+          <Route path="change/password" element={<Dashboard />}>
+            <Route index element={<ChangePassword />} />
+          </Route>
+          <Route path="grades" element={<Dashboard />}>
+            <Route index element={<Grades data={sampleData} />} />
+            <Route path="detail/:id" element={<GradeDetails tasks={sampleTasks} />} />
+          </Route>
         </Route>
-        <Route path="class" element={<Dashboard />}>
-          <Route index element={<ClassLayout topics={initialClass} />} />
-          <Route path="meeting" element={<DetailClassLayout meetings={initialMeeting} assessment={initialAssesment} />} />
-          <Route path="meeting/detail" element={<DetailMeetingLayout videos={initialVideos} materials={initialMaterials} />} />
-          <Route path="assesment/detail" element={<AssesmentDetail />} />
-          <Route path="meeting/add" element={<AddMeeting />} />
-          <Route path="assesment/add" element={<AddAssesment />} />
+
+        <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN]} />} >
+          <Route path="/users" element={<Dashboard />}>
+            <Route index element={<AdminUsers />} />
+            <Route path="siswa" element={<SiswaUsers />} />
+            <Route path="pengajar" element={<PengajarUsers />} />
+            <Route path="pengajar?delete=:id" element={<PengajarUsers />} />
+          </Route>
+          <Route path="topic" element={<Dashboard />}>
+            <Route index element={<Topics />} />
+          </Route>
         </Route>
-        <Route path="task" element={<Dashboard />}>
-          <Route index element={<AssesmentList assessment={initialAssesment} />} />
-        </Route>
-        <Route path="library" element={<Library books={initialBooks} />} />
-        <Route path="forum" element={<Dashboard />}>
-          <Route index element={<DiscussionForum />} />
-        </Route>
-        <Route path="profile" element={<Dashboard />}>
-          <Route index element={<AccountSettings />} />
-        </Route>
-        <Route path="change/password" element={<Dashboard />}>
-          <Route index element={<ChangePassword />} />
-        </Route>
-        <Route path="grades" element={<Dashboard />}>
-          <Route index element={<Grades data={sampleData} />} />
-          <Route path="detail/:id" element={<GradeDetails tasks={sampleTasks} />} />
-        </Route>
+
       </Routes>
     </BrowserRouter>
   );

@@ -7,24 +7,34 @@ export default function Tab() {
 
     return (
         <div className="flex border-b mb-6">
-            <Link to="/profile">
+            <Link to="/users">
                 <button
-                    className={`px-4 py-2 font-semibold ${isActive("/profile")
+                    className={`px-4 py-2 font-semibold ${isActive("/users")
                         ? "text-orange-500 border-b-2 border-orange-500"
                         : "text-gray-500 hover:text-orange-500"
                         }`}
                 >
-                    Account Setting
+                    Account admin
                 </button>
             </Link>
-            <Link to="/change/password">
+            <Link to="/users/siswa">
                 <button
-                    className={`px-4 py-2 font-semibold ${isActive("/change/password")
+                    className={`px-4 py-2 font-semibold ${isActive("/users/siswa")
                         ? "text-orange-500 border-b-2 border-orange-500"
                         : "text-gray-500 hover:text-orange-500"
                         }`}
                 >
-                    Password
+                    Account siswa
+                </button>
+            </Link>
+            <Link to="/users/pengajar">
+                <button
+                    className={`px-4 py-2 font-semibold ${isActive("/users/pengajar")
+                        ? "text-orange-500 border-b-2 border-orange-500"
+                        : "text-gray-500 hover:text-orange-500"
+                        }`}
+                >
+                    Account pengajar
                 </button>
             </Link>
         </div>
