@@ -17,7 +17,7 @@ export default function DetailClassLayout() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await axios.get(`/api/meeting/${id}`, {
+                const response = await axios.get(`/api/meeting/id/${id}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         Accept: '*/*',
@@ -34,56 +34,54 @@ export default function DetailClassLayout() {
     }, [id, auth.accessToken]);
 
     useEffect(() => {
-        if (detailMeetings.length > 0) {
-            const extractedVideos = detailMeetings.flatMap(meeting => {
-                const videoArray = [];
-                if (meeting.vidio1) {
-                    videoArray.push({ url: meeting.vidio1, title: meeting.title_vid1 });
-                }
-                if (meeting.vidio2) {
-                    videoArray.push({ url: meeting.vidio2, title: meeting.title_vid2 });
-                }
-                if (meeting.vidio3) {
-                    videoArray.push({ url: meeting.vidio3, title: meeting.title_vid3 });
-                }
-                return videoArray;
-            });
-            setVideos(extractedVideos);
+        if (detailMeetings) {
+            const updatedVideos = [];
+            let index = 1;
+            while (detailMeetings[`vidio${index}`]) {
+                updatedVideos.push({
+                    vidio: detailMeetings[`vidio${index}`],
+                    title_vid: detailMeetings[`title_vid${index}`],
+                });
+                index++;
+            }
+            setVideos(updatedVideos);
         }
     }, [detailMeetings]);
 
     useEffect(() => {
-        if (detailMeetings.length > 0) {
-            const extractedMaterials = detailMeetings.flatMap(meeting => {
-                const materiArray = [];
-                if (meeting.file_materi1) {
-                    materiArray.push({ materi: meeting.file_materi1 });
-                }
-                if (meeting.file_materi2) {
-                    materiArray.push({ materi: meeting.file_materi2 });
-                }
-                if (meeting.file_materi3) {
-                    materiArray.push({ materi: meeting.file_materi3 });
-                }
-                return materiArray;
-            });
-            setMaterials(extractedMaterials);
+        if (detailMeetings) {
+            const updatedMaterials = [];
+            let index = 1;
+            while (detailMeetings[`file_materi${index}`]) {
+                updatedMaterials.push({
+                    materi: detailMeetings[`file_materi${index}`],
+                });
+                index++;
+            }
+            setMaterials(updatedMaterials);
         }
     }, [detailMeetings]);
 
     return (
-        <div className='lg:max-h-screen grid lg:grid-rows-2 grid-rows-4 lg:grid-flow-col gap-4 lg:gap-0'>
-            <div className='lg:row-span-2'>
+        <div className="grid grid-rows-2 grid-cols-3 gap-0 max-w-screen-lg max-h-screen mx-auto">
+            {/* Kolom pertama: VideoList */}
+            <div className="row-span-2 col-span-1">
                 <VideoList videos={videos} />
             </div>
-            <div className='lg:col-span-1'>
+
+            {/* Kolom kedua: MaterialList */}
+            <div className="row-span-1 col-span-1 mb-8">
                 <MaterialList materials={materials} />
             </div>
-            <div className='lg:col-span-1'>
-                <SummarySection />
-            </div>
-            <div className='lg:row-span-2'>
+
+            {/* Kolom ketiga: PreviewSection */}
+            <div className="row-span-2 col-span-1">
                 <PreviewSection />
+            </div>
+
+            {/* Kolom kedua, baris kedua: SummarySection */}
+            <div className="row-span-1 col-span-1">
+                <SummarySection summary={detailMeetings.summary} />
             </div>
         </div>
     );

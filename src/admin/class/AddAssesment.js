@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { CloudUpload, Trash2 } from "lucide-react";
+import { CloudUpload, Trash2, LayoutDashboardIcon } from "lucide-react";
 import { useParams } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/axios";
 
 export default function AddAssessment() {
-    const [uploadedFiles, setUploadedFiles] = useState([]);
-    const [uploadingFile, setUploadingFile] = useState(null);
+    const [uploadedFile1, setUploadedFile1] = useState([]);
+    const [uploadingFile1, setUploadingFile1] = useState(null);
     const [kelasId, setKelasId] = useState();
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [deadlines, setDeadlines] = useState();
+    const [deadlines, setDeadlines] = useState("");
     const { id } = useParams();
     const { auth } = useAuth();
 
@@ -20,40 +20,46 @@ export default function AddAssessment() {
 
     const handleFileUpload = (event) => {
         const files = Array.from(event.target.files);
-        setUploadingFile(files[0]);
+        setUploadingFile1(files[0]);
 
         setTimeout(() => {
-            setUploadedFiles((prev) => [...prev, ...files]);
-            setUploadingFile(null);
+            setUploadedFile1((prev) => [...prev, ...files]);
+            setUploadingFile1(null);
         }, 2000);
     };
 
     const handleFileRemove = (fileName) => {
-        setUploadedFiles((prev) => prev.filter((file) => file.name !== fileName));
+        setUploadedFile1((prev) => prev.filter((file) => file.name !== fileName));
     };
 
     async function addAssessment(event) {
         event.preventDefault();
 
         try {
-            const response = await axios.post('/api/assesment',
-                JSON.stringify({
-                    kelasId,
-                    title,
-                    description,
-                    deadlines,
-                    files: uploadedFiles.map((file) => file.name),
-                }),
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Accept: '*/*',
-                        Authorization: `Bearer ${auth.accessToken}`,
-                    },
-                    withCredentials: true,
-                }
-            );
+            const formData = new FormData();
+            formData.append('kelasId', kelasId);
+            formData.append('title', title);
+            formData.append('description', description);
+            formData.append('deadlines', deadlines);
+
+            if (uploadedFile1.length > 0) {
+                formData.append('file1', uploadedFile1[0]);
+                formData.append('file2', uploadedFile1[1]);
+                formData.append('file3', uploadedFile1[2]);
+            }
+
+            const response = await axios.post('/api/assesment', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${auth.accessToken}`,
+                },
+            });
+
             alert("Assessment added successfully!");
+            setTitle('');
+            setDescription('');
+            setDeadlines('');
+            setUploadedFile1([]);
         } catch (error) {
             console.error("Error response:", error.response?.data || error.message);
             alert("Failed to add assessment. Please try again.");
@@ -62,7 +68,12 @@ export default function AddAssessment() {
 
     return (
         <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
-            <h1 className="text-xl font-bold text-gray-800 mb-6">Add Assessment</h1>
+            <h1 className="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                <span className="pr-4">
+                    <LayoutDashboardIcon fill="#FFD60A" color="transparent" />
+                </span>
+                Add Assessment
+            </h1>
             <form method="POST" onSubmit={addAssessment}>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div>
@@ -107,27 +118,26 @@ export default function AddAssessment() {
                                 <input
                                     id="file-upload"
                                     type="file"
-                                    multiple
                                     className="hidden"
                                     onChange={handleFileUpload}
                                 />
                             </label>
                         </div>
 
-                        {uploadingFile && (
+                        {uploadingFile1 && (
                             <div className="mt-4">
-                                <p className="text-sm text-gray-600 mb-2">Uploading: {uploadingFile.name}</p>
+                                <p className="text-sm text-gray-600 mb-2">Uploading: {uploadingFile1.name}</p>
                                 <div className="w-full bg-gray-200 rounded-full h-2">
                                     <div className="bg-blue-500 h-2 rounded-full w-3/4"></div>
                                 </div>
                             </div>
                         )}
 
-                        {uploadedFiles.length > 0 && (
+                        {uploadedFile1.length > 0 && (
                             <div className="mt-6">
                                 <h3 className="font-semibold text-gray-700 mb-2">Uploaded Files</h3>
                                 <ul>
-                                    {uploadedFiles.map((file, index) => (
+                                    {uploadedFile1.map((file, index) => (
                                         <li
                                             key={index}
                                             className="flex items-center justify-between bg-blue-50 rounded-lg px-4 py-2 mb-2"

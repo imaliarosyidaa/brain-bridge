@@ -1,9 +1,9 @@
 import TopicList from "./class/ClassList";
 
-export default function ClassLayout({ topics }) {
+export default function ClassLayout({ initialAsset }) {
     return (
         <>
-            <TopicList topics={topics} />
+            <TopicList initialAsset={initialAsset} />
         </>
     );
 }

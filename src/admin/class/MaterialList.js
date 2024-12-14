@@ -3,9 +3,9 @@ import { Download, LucideBookDown } from "lucide-react";
 
 export default function MaterialList({ materials }) {
     return (
-        <div className='rounded-md m-4 overflow-y-auto max-h-screen min-h-screen'>
+        <div className='rounded-md m-4 overflow-y-auto max-h-full min-h-full'>
             <div className='grid grid-cols-1 gap-4'>
-                {materials.map((material) => (<Material material={material} key={material.id} />))}
+                {materials.map((material,index) => (<Material material={material} key={index} />))}
             </div>
         </div>
     );
@@ -19,7 +19,7 @@ function Material({ material }) {
                     <div className='pr-2'>
                         <LucideBookDown fill='#374957' color='#FFD60A' />
                     </div>
-                    <p className='font-bold text-[#343A40]'>{material.title}</p>
+                    <MateriName material={material}/>
                 </div>
             </div>
             <div className='col-span-2'>
@@ -33,5 +33,14 @@ function Material({ material }) {
                 </div>
             </div>
         </div>
+    );
+}
+
+function MateriName({ material }) {
+    const url = material.materi;
+    const fileName = url.split('/').pop();
+    
+    return (
+        <p className="font-bold text-[#343A40]">{fileName}</p>
     );
 }

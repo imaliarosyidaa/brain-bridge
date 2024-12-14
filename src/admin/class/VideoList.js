@@ -6,7 +6,7 @@ export default function VideoList({ videos }) {
         <div className='bg-[#48CAE4] rounded-2xl p-4 overflow-y-auto max-h-screen min-h-screen m-4'>
             <h1 className='font-bold text-white pb-4'>Video Section</h1>
             <div className='grid grid-cols-1 gap-4'>
-                {videos.map((video) => (<Video video={video} key={video.id} />))}
+                {videos.map((video, index) => (<Video video={video} key={index} />))}
             </div>
         </div>
     );
@@ -19,7 +19,7 @@ function Video({ video }) {
             <div className='flex justify-between'>
                 <div className='flex'>
                     <LayoutDashboard color='#FFA62B' />
-                    <p className='pl-2'>{video.title}</p>
+                    <p className='pl-2'>{video.title_vid}</p>
                 </div>
                 <div>
                     <Download />

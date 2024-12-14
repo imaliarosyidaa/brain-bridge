@@ -37,6 +37,7 @@ import AdminUsers from "./admin/users/Admin";
 import PengajarUsers from "./admin/users/Pengajar";
 import SiswaUsers from "./admin/users/Siswa";
 import Topics from "./admin/topics/Topics";
+import CreateTopic from "./admin/topics/CreateTopic"
 
 const ROLES = {
   'ADMIN': 'ADMIN',
@@ -63,11 +64,11 @@ export default function App() {
             <Route index element={<AppLayout />} />
           </Route>
           <Route path="class" element={<Dashboard />}>
-            <Route index element={<ClassLayout assset={initialAsset} />} />
+            <Route index element={<ClassLayout initialAsset={initialAsset} />} />
             <Route path="add" element={<AddClass />} />
-            <Route path="meeting/:id" element={<DetailClassLayout meetings={initialMeeting} assessment={initialAssesment} />} />
-            <Route path="meeting/detail/:id" element={<DetailMeetingLayout videos={initialVideos} materials={initialMaterials} />} />
-            <Route path="assesment/detail" element={<AssesmentDetail />} />
+            <Route path="meeting/:id" element={<DetailClassLayout />} />
+            <Route path="meeting/detail/:id" element={<DetailMeetingLayout />} />
+            <Route path="assessment/detail/:id" element={<AssesmentDetail />} />
             <Route path="meeting/add/:id" element={<AddMeeting />} />
             <Route path="assesment/add/:id" element={<AddAssesment />} />
           </Route>
@@ -100,6 +101,7 @@ export default function App() {
           </Route>
           <Route path="topic" element={<Dashboard />}>
             <Route index element={<Topics />} />
+            <Route path="create" element={<CreateTopic />} />
           </Route>
         </Route>
 

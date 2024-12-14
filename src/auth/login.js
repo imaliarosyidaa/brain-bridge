@@ -39,7 +39,7 @@ export default function Login() {
                     withCredentials: true
                 }
             );
-            const accessToken = response?.data?.jwt;
+            const accessToken = response?.data?.accessToken;
             console.log(accessToken)
             const role = response?.data?.role;
             const nama = response?.data?.name;

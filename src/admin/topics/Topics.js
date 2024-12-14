@@ -11,13 +11,14 @@ export default function Topics() {
     const [currentPage, setCurrentPage] = useState(1);
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
     const { id } = useParams();
+    const [message, setMessage] = useState('');
 
     const rowsPerPage = 5;
 
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await axios.get('/api/user/admin', {
+                const response = await axios.get('/api/topic', {
                     headers: {
                         'Content-Type': 'application/json',
                         Accept: '*/*',
@@ -35,7 +36,7 @@ export default function Topics() {
 
     async function deleteData(id) {
         try {
-            await axios.delete(`/api/user/${id}`, {
+            const response = await axios.delete(`/api/topic/${id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     Accept: '*/*',
@@ -43,6 +44,7 @@ export default function Topics() {
                 },
                 withCredentials: true,
             });
+            setMessage(response?.data?.message)
         } catch (error) {
             console.error("Error response:", error.response?.data || error.message);
             alert("update failed, please check your credentials.");
@@ -94,7 +96,7 @@ export default function Topics() {
                                     className="flex items-center justify-between cursor-pointer"
                                     onClick={() => toggleSort('name')}
                                 >
-                                    <span>Nama</span>
+                                    <span>Id</span>
                                     {getSortIcon('name')}
                                 </div>
                             </th>
@@ -103,20 +105,11 @@ export default function Topics() {
                                     className="flex items-center justify-between cursor-pointer"
                                     onClick={() => toggleSort('email')}
                                 >
-                                    <span>Email</span>
+                                    <span>Name</span>
                                     {getSortIcon('email')}
                                 </div>
                             </th>
-                            <th className="px-6 py-3 border-b border-gray-200">
-                                <div
-                                    className="flex items-center justify-between cursor-pointer"
-                                    onClick={() => toggleSort('role')}
-                                >
-                                    <span>Role</span>
-                                    {getSortIcon('role')}
-                                </div>
-                            </th>
-                            <th className="px-6 py-3 border-b border-gray-200">Detail</th>
+                            <th className="px-6 py-3 border-b border-gray-200">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -126,9 +119,8 @@ export default function Topics() {
                                 className={`${index % 2 === 0 ? 'bg-[#48CAE4]' : 'bg-[#C0E0EF]'
                                     } text-gray-800`}
                             >
-                                <td className="px-6 py-4 border-b border-gray-200">{row.first_name + " " + row.last_name}</td>
-                                <td className="px-6 py-4 border-b border-gray-200">{row.email}</td>
-                                <td className="px-6 py-4 border-b border-gray-200">{row.role}</td>
+                                <td className="px-6 py-4 border-b border-gray-200">{row.id}</td>
+                                <td className="px-6 py-4 border-b border-gray-200">{row.name}</td>
                                 <td className="px-6 py-4 border-b border-gray-200">
                                     <button onClick={() => deleteData(row.id)}
                                         className="text-blue-500 flex text-red-500 items-center gap-2"
@@ -141,6 +133,7 @@ export default function Topics() {
                         ))}
                     </tbody>
                 </table>
+                {message && <p className="text-red-500 text-sm my-4">{message}</p>}
             </div>
 
             <div className="flex justify-between items-center mt-4">

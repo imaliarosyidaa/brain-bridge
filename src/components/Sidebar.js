@@ -18,7 +18,7 @@ export default function Sidebar({ children, expanded, setExpanded }) {
         handleResize();
 
         return () => window.removeEventListener("resize", handleResize);
-    }, []);
+    }, [setExpanded]);
 
     return (
         <aside className="h-screen fixed top-0 left-0">
@@ -34,12 +34,6 @@ export default function Sidebar({ children, expanded, setExpanded }) {
                                 }`}
                             alt="Logo"
                         /></Link>
-                    <button
-                        onClick={() => setExpanded((curr) => !curr)}
-                        className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100"
-                    >
-                        {expanded ? <ChevronFirst /> : <ChevronLast />}
-                    </button>
                 </div>
 
                 <SidebarContext.Provider value={{ expanded }}>
