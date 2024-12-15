@@ -7,7 +7,7 @@ export default function DetailClassLayout({ meetings, assessment }) {
     const { auth } = useAuth();
 
     return (
-        <div className="grid lg:grid-cols-2 grid-rows-2 gap-4">
+        <div className="grid lg:grid-cols-2 grid-rows-2 gap-4 m-4">
             {/* Kolom pertama: MeetingList s(span 2 rows) */}
             <div className="row-span-2">
                 <MeetingList meetings={meetings} />

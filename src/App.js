@@ -16,6 +16,7 @@ import Grades from "./admin/grades/Grades";
 import AccountSettings from "./admin/profile/AccountSettings";
 import ChangePassword from "./admin/profile/ChangePassword";
 import GradeDetails from "./admin/grades/GradeDetails";
+import SubmitedList from "./admin/grades/SubmitedList";
 import AppLayout from "./admin/app/AppLayout";
 import AddMeeting from "./admin/class/AddMeeting";
 import AddAssesment from "./admin/class/AddAssesment";
@@ -63,18 +64,42 @@ export default function App() {
           <Route path="app" element={<Dashboard />}>
             <Route index element={<AppLayout />} />
           </Route>
-          <Route path="class" element={<Dashboard />}>
+        </Route>
+
+        <Route path="class" element={<Dashboard />}>
+          <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN, ROLES.PENGAJAR, ROLES.SISWA]} />} >
             <Route index element={<ClassLayout initialAsset={initialAsset} />} />
+          </Route>
+          <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN, ROLES.PENGAJAR]} />} >
             <Route path="add" element={<AddClass />} />
+          </Route>
+          <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN, ROLES.PENGAJAR, ROLES.SISWA]} />} >
             <Route path="meeting/:id" element={<DetailClassLayout />} />
+          </Route>
+          <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN, ROLES.PENGAJAR, ROLES.SISWA]} />} >
             <Route path="meeting/detail/:id" element={<DetailMeetingLayout />} />
+          </Route>
+          <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN, ROLES.PENGAJAR, ROLES.SISWA]} />} >
             <Route path="assessment/detail/:id" element={<AssesmentDetail />} />
+          </Route>
+          <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN, ROLES.PENGAJAR,]} />} >
+            <Route path="assessment/detail/submited/:id" element={<SubmitedList />} />
+          </Route>
+          <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN, ROLES.PENGAJAR,]} />} >
             <Route path="meeting/add/:id" element={<AddMeeting />} />
+          </Route>
+          <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN, ROLES.PENGAJAR,]} />} >
             <Route path="assesment/add/:id" element={<AddAssesment />} />
           </Route>
+        </Route>
+
+        <Route element={<RequireAuth allowedRoles={[ROLES.SISWA]} />} >
           <Route path="task" element={<Dashboard />}>
-            <Route index element={<AssesmentList assessment={initialAssesment} />} />
+            <Route index element={<AssesmentList />} />
           </Route>
+        </Route>
+
+        <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN, ROLES.PENGAJAR, ROLES.SISWA]} />} >
           <Route path="library" element={<Library books={initialBooks} />} />
           <Route path="books/:id" element={<BookDetail />} />
           <Route path="forum" element={<Dashboard />}>

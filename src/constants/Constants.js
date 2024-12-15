@@ -94,10 +94,6 @@ export const initialVideos = [
         id: 3, title: "Part 3",
         cover: VideoCover
     },
-    {
-        id: 4, title: "Part 4",
-        cover: VideoCover
-    },
 ];
 
 export const initialMaterials = [

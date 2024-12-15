@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { LayoutDashboard, Download } from 'lucide-react'
+import { LayoutDashboard, Download, Play } from 'lucide-react'
+import VideoCover from '../../logo/video-cover.png'
 
 export default function VideoList({ videos }) {
     return (
@@ -13,16 +14,32 @@ export default function VideoList({ videos }) {
 }
 
 function Video({ video }) {
+    const handleDownload = (url) => {
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = url.split('/').pop();
+        link.click();
+    };
+
     return (
         <div className="h-fit bg-white shadow rounded-3xl px-3 pt-3 pb-6 hover:shadow-md transition grid grid-cols-1 gap-4">
-            <img src={video.cover} alt="video-cover" />
-            <div className='flex justify-between'>
-                <div className='flex'>
-                    <LayoutDashboard color='#FFA62B' />
-                    <p className='pl-2'>{video.title_vid}</p>
+            <div>
+                <div className='relative'>
+                    <img className='w-full' src={VideoCover} alt="video-cover" />
+                    <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10'>
+                        <Play fill='#FFD60A' style={{ cursor: 'pointer'}} size={30} color='transparent' />
+                    </div>
                 </div>
-                <div>
-                    <Download />
+            </div>
+            <div className='flex justify-between'>
+                <div className='grid grid-flow-col'>
+                    <LayoutDashboard color='#FFA62B' />
+                    <p className='pl-2 capitalize'>{video.title_vid}</p>
+                </div>
+                <div className='px-4'>
+                    <Download onClick={() => handleDownload(video.vidio)}
+                        style={{ cursor: 'pointer' }}
+                    />
                 </div>
             </div>
         </div>

@@ -1,10 +1,11 @@
 import { LucideNotebookText, PencilIcon } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
+import DetailMeetingLayout from "../DetailMeetingLayout";
 import { Link, useParams } from "react-router-dom";
 import axios from "../../api/axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function SummarySection({ summary }) {
+export default function SummarySection({ summary, setSummary }) {
     const { auth } = useAuth();
     const { id } = useParams();
     const [updatedSummary, setUpdatedSummary] = useState(summary || "");
@@ -33,6 +34,25 @@ export default function SummarySection({ summary }) {
             alert("Failed to update summary.");
         }
     }
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await axios.get(`/api/meeting/id/${id}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: '*/*',
+                        Authorization: `Bearer ${auth.accessToken}`,
+                    },
+                    withCredentials: true,
+                });
+                setSummary(response?.data.summary || "");
+                setUpdatedSummary(response?.data.summary || "");
+            } catch (error) {
+                console.error('Error fetching meetings:', error);
+            }
+        }
+        fetchData();
+    }, [id, auth.accessToken, setSummary, summary]);
 
     return (
         <div className="bg-[#48CAE4] rounded-2xl m-4 overflow-y-auto h-full">
@@ -54,14 +74,15 @@ export default function SummarySection({ summary }) {
             <div className="m-2 rounded-lg text-xs p-1 bg-[#F5F5F5] min-h-full">
                 <form method="PUT" onSubmit={updateSummary}>
                     <textarea
-                        className={`w-full h-96 bg-transparent p-2 rounded-md border-none focus:outline-none ${isEditing ? "border border-gray-300 focus:ring-2 focus:ring-blue-500" : ""
-                            }`}
+                        className={`w-full h-96 bg-transparent p-2 rounded-md border-none focus:outline-none ${isEditing ? "border border-gray-300 focus:ring-2 focus:ring-blue-500" : ""}`}
                         value={updatedSummary}
                         readOnly={!isEditing}
                         onClick={() => setIsEditing(true)}
                         onChange={(e) => setUpdatedSummary(e.target.value)}
                         placeholder="There is no summary in this meeting"
-                    />
+                    >
+                        {summary}
+                    </textarea>
                     {isEditing && (
                         <div className="flex justify-end mt-2">
                             <button

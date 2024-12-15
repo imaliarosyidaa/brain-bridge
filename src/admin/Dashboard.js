@@ -33,7 +33,11 @@ export default function Dashboard() {
     const mainSidebarItems = [
         { icon: <LayoutDashboard size={20} />, text: "Dashboard", route: "/app" },
         { icon: <Users size={20} />, text: "Class", route: "/class" },
-        { icon: <ClipboardList size={20} />, text: "Task", route: "/task" },
+        ...(auth?.role === 'SISWA'
+            ? [
+                { icon: <ClipboardList size={20} />, text: "Task", route: "/task" },
+            ]
+            : []),
         { icon: <FileBarChart size={20} />, text: "Grades & Reports", route: "/grades" },
         { icon: <BookCheckIcon size={20} />, text: "E-Book Library", route: "/library" },
     ];

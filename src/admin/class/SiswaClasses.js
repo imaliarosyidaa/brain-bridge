@@ -49,7 +49,7 @@ export default function SiswaClasses({ assessment }) {
     }, [id, auth.accessToken]);
 
     return (
-        <div className="bg-[#48CAE4] max-h-full h-full rounded-md p-6 m-4 overflow-y-auto">
+        <div className="bg-[#48CAE4] max-h-screen h-full rounded-md p-6 overflow-y-auto">
             <div className='flex items-center mb-4'>
                 <h1 className="font-bold text-white text-lg">Student</h1>
             </div>

@@ -1,4 +1,4 @@
-import { NotebookPenIcon, Edit } from 'lucide-react';
+import { NotebookPenIcon, Edit, FileSlidersIcon, ArrowDownCircleIcon } from 'lucide-react';
 import useAuth from '../../hooks/useAuth';
 import { Form, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -19,8 +19,20 @@ export default function AssesmentDetail() {
     const [errorMessage, setErrorMessage] = useState("")
     const [showInput, setShowInput] = useState(false)
     const [updatedNilai, setUpdatedNilai] = useState()
+    const [documents, setDocuments] = useState([]);
 
-    const allowedTypes = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+    useEffect(() => {
+        const validDocuments = Object.entries(assessment)
+            .filter(([key, value]) =>
+                ["file1", "file2", "file3"].includes(key) && value && value !== "undefined"
+            )
+            .map(([key, value]) => ({
+                key,
+                url: value,
+            }));
+
+        setDocuments(validDocuments);
+    }, [assessment]);
 
     const handleFileUpload = (event) => {
         const files = Array.from(event.target.files);
@@ -45,6 +57,7 @@ export default function AssesmentDetail() {
         try {
             const formData = new FormData();
             formData.append("assesmentId", id)
+            formData.append("siswaId", auth.id)
             formData.append("file", uploadedFiles[0]);
             formData.append("jawaban", jawabanText);
 
@@ -119,6 +132,28 @@ export default function AssesmentDetail() {
         setUpdatedNilai(jawaban.nilai)
     }, [jawaban.nilai]);
 
+    const formattedDeadline = new Date(assessment.deadline).toLocaleDateString('id-ID', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
+
+    const handleDownload = async (url, fileName) => {
+        try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = downloadUrl;
+            a.download = fileName;
+            a.click();
+            window.URL.revokeObjectURL(downloadUrl);
+        } catch (error) {
+            console.error("Download failed:", error);
+            alert("Failed to download the document. Please try again.");
+        }
+    };
+
     return (
         <>
             {message && (
@@ -150,13 +185,32 @@ export default function AssesmentDetail() {
                     <div className="col-span-2">
                         <div className='bg-orange p-4 rounded-md'>
                             <h3 className="font-bold text-[#343A40]">Deadline</h3>
-                            <p className='text-white'>{assessment.deadline}</p>
+                            <p className='text-white'>{formattedDeadline}</p>
                         </div>
                         <div className="mt-4">
                             <h3 className="font-bold">Document</h3>
-                            <ul className="list-disc list-inside">
-                                <li>Document 1</li>
-                                <li>Document 2</li>
+                            <ul className="list-inside list-none">
+                                {documents.map((doc, index) => (
+                                    <li key={index} className='flex justify-between'>
+                                        <div className='flex'>
+                                            <div className='bg-black w-8 h-8 mr-4 rounded-full flex items-center justify-center'>
+                                                <FileSlidersIcon color='white' />
+                                            </div>
+                                            <a
+                                                href={doc.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-blue-500 hover:underline"
+                                            >
+                                                {`Document ${index + 1}`}
+                                            </a>
+                                        </div>
+                                        <button onClick={() => handleDownload(doc, `Document-${index + 1}`)}
+                                            className="bg-[#EDE7D9] w-8 h-8 rounded-full shadow hover:bg-[#e3dcccef] transition flex items-center justify-center">
+                                            <ArrowDownCircleIcon color='#120008' />
+                                        </button>
+                                    </li>
+                                ))}
                             </ul>
                         </div>
                     </div>

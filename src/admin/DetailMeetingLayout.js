@@ -13,6 +13,7 @@ export default function DetailClassLayout() {
     const { id } = useParams();
     const [videos, setVideos] = useState([]);
     const [materials, setMaterials] = useState([]);
+    const [summary, setSummary] = useState('')
 
     useEffect(() => {
         async function fetchData() {
@@ -26,6 +27,7 @@ export default function DetailClassLayout() {
                     withCredentials: true,
                 });
                 setDetailMeetings(response?.data);
+                setSummary(response?.data?.summary);
             } catch (error) {
                 console.error('Error fetching meetings:', error);
             }
@@ -63,7 +65,7 @@ export default function DetailClassLayout() {
     }, [detailMeetings]);
 
     return (
-        <div className="grid grid-rows-2 grid-cols-3 gap-0 max-w-screen-lg max-h-screen mx-auto">
+        <div className="grid grid-cols-1 lg:grid-rows-2 lg:grid-cols-3 gap-0 max-w-screen-lg max-h-screen mx-auto">
             {/* Kolom pertama: VideoList */}
             <div className="row-span-2 col-span-1">
                 <VideoList videos={videos} />
@@ -81,7 +83,7 @@ export default function DetailClassLayout() {
 
             {/* Kolom kedua, baris kedua: SummarySection */}
             <div className="row-span-1 col-span-1">
-                <SummarySection summary={detailMeetings.summary} />
+                <SummarySection summary={summary} setSummary={setSummary} />
             </div>
         </div>
     );

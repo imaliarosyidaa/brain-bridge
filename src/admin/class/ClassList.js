@@ -19,6 +19,7 @@ export default function ClassList({ initialAsset }) {
     const [assesment, setAssessment] = useState([]);
     const [assessmentCount, setAssessmentCount] = useState();
     const [joinedClass, setJoinedClass] = useState('')
+    const [isJoined, setIsJoined] = useState(false)
 
     useEffect(() => {
         async function fetchData() {
@@ -36,6 +37,32 @@ export default function ClassList({ initialAsset }) {
     }, [auth.accessToken]);
 
     useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await axios.get('/api/assesment/class', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: '*/*',
+                        Authorization: `Bearer ${auth.accessToken}`,
+                    },
+                    withCredentials: true,
+                });
+                const grouped = response.data.reduce((acc, assessment) => {
+                    if (!acc[assessment.kelas_id]) {
+                        acc[assessment.kelas_id] = [];
+                    }
+                    acc[assessment.kelas_id].push(assessment);
+                    return acc;
+                }, {});
+                setAssessment(grouped);
+            } catch (error) {
+                console.error("Error fetching assessments:", error.response?.data || error.message);
+            }
+        }
+        fetchData();
+    }, [auth.accessToken]);
+
+    useEffect(() => {
         const updatedTopics = topics.map((topic, index) => {
             const asset = initialAsset[index % initialAsset.length];
             return {
@@ -45,7 +72,7 @@ export default function ClassList({ initialAsset }) {
             };
         });
         setStyledTopics(updatedTopics);
-    }, [topics]);
+    }, [topics, initialAsset]);
 
 
     async function deleteData(id) {
@@ -78,6 +105,7 @@ export default function ClassList({ initialAsset }) {
                 withCredentials: true,
             });
             setJoinedClass(response?.data)
+            setIsJoined(true)
             setMessage("Success! You've joined the class successfully.");
         } catch (error) {
             console.error("Error response:", error.response?.data || error.message);
@@ -97,6 +125,7 @@ export default function ClassList({ initialAsset }) {
                 withCredentials: true,
             });
             setJoinedClass(response?.data)
+            setIsJoined(false)
             setMessage("You have successfully left the class.");
         } catch (error) {
             console.error("Error response:", error.response?.data || error.message);
@@ -142,10 +171,11 @@ export default function ClassList({ initialAsset }) {
                         key={topic.id || index}
                         auth={auth}
                         onDelete={deleteData}
+                        assessments={assesment[topic.id] || []} // Pass assessments for the class
                         onJoin={joinClass}
-                        assessmentCount={assessmentCount}
                         joinedClass={joinedClass}
                         onLeave={leaveClass}
+                        isJoined={isJoined}
                     />
                 ))}
             </div>
@@ -153,12 +183,15 @@ export default function ClassList({ initialAsset }) {
     );
 }
 
-function Topic({ topic, color, image, auth, onDelete, assessmentCount, onJoin, joinedClass, onLeave }) {
+function Topic({ topic, color, image, auth, onDelete, assessments, onJoin, joinedClass, isJoined, onLeave }) {
+    const assessmentCount = assessments.length;
+
     return (
         <div
             style={{ backgroundColor: color }}
             className="w-full h-[237px] shadow rounded-lg p-4 hover:shadow-md transition relative z-0 flex flex-col justify-between"
         >
+
             {(auth?.role === 'ADMIN' || auth.role === 'PENGAJAR') && (
                 <button
                     className="absolute top-4 right-4 rounded-full w-6 h-6 bg-red-500 text-white flex items-center justify-center text-xs leading-none hover:shadow-md transition"
@@ -167,26 +200,18 @@ function Topic({ topic, color, image, auth, onDelete, assessmentCount, onJoin, j
                     x
                 </button>
             )}
-            {joinedClass && (auth?.role === 'SISWA') && (
-                <button
-                    onClick={() => onJoin(topic.id)}
-                    className="absolute top-4 right-4 rounded-full py-1 px-4 font-semibold bg-orange text-gray-700 flex items-center justify-center text-sm leading-none hover:shadow-md transition"
-                >
-                    join class
-                </button>
-            )}
-
-            {!joinedClass && (auth?.role === 'SISWA') && (
-                <button
-                    onClick={() => onLeave(topic.id)}
-                    className="absolute top-4 right-4 rounded-full py-1 px-4 font-semibold bg-red-400 text-red-700 flex items-center justify-center text-sm leading-none hover:shadow-md transition"
-                >
-                    leave class
-                </button>
-            )}
             <div>
-                <div className="flex items-center justify-between">
+                <div className="flex items-start justify-between">
                     <img src={image} alt="Logo" className="w-max h-auto" />
+                    {auth?.role === "SISWA" && (
+                        <button
+                            onClick={() => (isJoined ? onLeave(topic.id) : onJoin(topic.id))}
+                            className={`mt-2 w-fit px-2 py-1 rounded-full text-sm shadow transition ${isJoined ? "bg-red-500 hover:bg-red-600 text-white" : "bg-[#FFA62B] hover:bg-orange text-[#343A40]"
+                                }`}
+                        >
+                            {isJoined ? "Leave Class" : "Join Class"}
+                        </button>
+                    )}
                 </div>
                 <p className="pt-4 font-semibold uppercase">{topic.name}</p>
             </div>
@@ -204,3 +229,4 @@ function Topic({ topic, color, image, auth, onDelete, assessmentCount, onJoin, j
         </div>
     );
 }
+

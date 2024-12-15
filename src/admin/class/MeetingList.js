@@ -29,7 +29,7 @@ export default function MeetingList() {
     }, [id, auth.accessToken]);
 
     return (
-        <div className="bg-[#48CAE4] rounded-md p-6 m-4 max-w-full min-w-full mx-auto overflow-y-auto max-h-screen min-h-screen">
+        <div className="bg-[#48CAE4] rounded-md p-6 max-w-full min-w-full mx-auto overflow-y-auto max-h-screen min-h-screen">
             <div className='flex items-center mb-4'>
                 <h1 className="font-bold text-white text-lg">Meetings</h1>
                 {(auth?.role === 'ADMIN' || auth.role === 'PENGAJAR') && (
@@ -53,7 +53,7 @@ function MeetingItem({ meeting }) {
         <div className="bg-[#FFD60A] shadow-md rounded-lg p-5 hover:shadow-lg transition duration-300 ease-in-out">
             <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 items-center">
                 <div className="lg:col-span-5">
-                    <p className="font-bold text-gray-800 text-lg">{meeting.tittle}</p>
+                    <p className="font-bold text-gray-800 text-lg capitalize">{meeting.tittle}</p>
                     <p className="text-sm text-[#343A40] mt-2">{meeting.description}</p>
                 </div>
                 <div className="lg:col-span-1 flex justify-end">

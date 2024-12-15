@@ -74,7 +74,7 @@ export default function Signup() {
                     </div>
                     <form className="px-16" onSubmit={signup} method='POST' >
                         {error && <p className="text-red-500">{error}</p>}
-                        <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 divide-x">
+                        <div className="grid grid-cols-1 lg:grid-cols-6 gap-4">
                             <div className="col-span-3">
                                 <label htmlFor="first-name" className="block font-medium text-[#666666] text-start">
                                     First Name
