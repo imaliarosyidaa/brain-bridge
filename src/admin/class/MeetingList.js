@@ -3,6 +3,7 @@ import { PlusCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import axios from '../../api/axios';
 import useAuth from '../../hooks/useAuth';
+import List from '../../components/List';
 
 export default function MeetingList() {
     const { auth } = useAuth();
@@ -29,41 +30,21 @@ export default function MeetingList() {
     }, [id, auth.accessToken]);
 
     return (
-        <div className="bg-[#48CAE4] rounded-md p-6 max-w-full min-w-full mx-auto overflow-y-auto max-h-screen min-h-screen">
+        <div className="p-6 max-w-full min-w-full mx-auto max-h-screen">
             <div className='flex items-center mb-4'>
-                <h1 className="font-bold text-white text-lg">Meetings</h1>
+                <h1 className="font-semibold text-lg text-slate-800">Modul</h1>
                 {(auth?.role === 'ADMIN' || auth.role === 'PENGAJAR') && (
                     <Link to={`/class/meeting/add/${id}`} className='ml-2'>
                         <PlusCircle fill='white' color='#48CAE4' aria-label="Add Meeting" />
                     </Link>)}
             </div>
-            {meetings.length === 0 ? <p className='italic flex text-gray-500 justify-center relative top-1/2'>-No meetings in this class-</p> :
-                <div className="grid grid-cols-1 gap-6">
+            {meetings.length === 0 ? <p className='italic flex text-gray-500 justify-center relative top-1/2'>Pelajaran tidak ditemukan</p> :
+                <ul className="grid grid-cols-1 gap-2 px-8">
                     {meetings.map((meeting) => (
-                        <MeetingItem meeting={meeting} key={meeting.id || meeting.title} />
+                        <List route={`/class/meeting/detail/${meeting.id}`} data={meeting.tittle} />
                     ))}
-                </div>
+                </ul>
             }
-        </div>
-    );
-}
-
-function MeetingItem({ meeting }) {
-    return (
-        <div className="bg-[#FFD60A] shadow-md rounded-lg p-5 hover:shadow-lg transition duration-300 ease-in-out">
-            <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 items-center">
-                <div className="lg:col-span-5">
-                    <p className="font-bold text-gray-800 text-lg capitalize">{meeting.tittle}</p>
-                    <p className="text-sm text-[#343A40] mt-2">{meeting.description}</p>
-                </div>
-                <div className="lg:col-span-1 flex justify-end">
-                    <Link to={`/class/meeting/detail/${meeting.id}`} aria-label={`Open meeting ${meeting.title}`}>
-                        <button className="bg-white text-sm font-medium text-gray-800 px-5 py-2 rounded-lg shadow hover:bg-gray-100 transition">
-                            Open
-                        </button>
-                    </Link>
-                </div>
-            </div>
         </div>
     );
 }

@@ -1,14 +1,10 @@
-import { UsersRound } from 'lucide-react';
-import { DoorClosed, Plus, ClipboardListIcon, XCircleIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import axios from '../../api/axios';
 import useAuth from '../../hooks/useAuth';
-import programming from '../../logo/programming.png';
-import ss from '../../logo/social-science.png';
-import wd from '../../logo/website-development.png';
-import stat from '../../logo/stat.png';
-import math from '../../logo/math.png';
+import Button from '../../components/Button';
+import Card from '../../components/Card';
+import { Plus } from 'lucide-react';
+import { Breadcrumbs, BreadcrumbItem } from "@heroui/breadcrumbs";
 
 export default function ClassList({ initialAsset }) {
     const { auth } = useAuth();
@@ -20,21 +16,52 @@ export default function ClassList({ initialAsset }) {
     const [assessmentCount, setAssessmentCount] = useState();
     const [joinedClass, setJoinedClass] = useState('')
     const [isJoined, setIsJoined] = useState(false)
+    const [currentPage, setCurrentPage] = useState("class");
+    const variants = ["light"];
 
     useEffect(() => {
         async function fetchData() {
-            const response = await axios.get('/api/class', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: '*/*',
-                    Authorization: `Bearer ${auth.accessToken}`,
-                },
-                withCredentials: true,
-            });
-            setTopics(response.data);
+            try {
+                let response;
+                if (auth.role === 'PENGAJAR') {
+                    response = await axios.get(`/api/class/pengajar/${auth.id}`, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Accept: '*/*',
+                            Authorization: `Bearer ${auth.accessToken}`,
+                        },
+                        withCredentials: true,
+                    });
+                } else if (auth.role === 'ADMIN') {
+                    response = await axios.get('/api/class', {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Accept: '*/*',
+                            Authorization: `Bearer ${auth.accessToken}`,
+                        },
+                        withCredentials: true,
+                    });
+                } else {
+                    response = await axios.get('/api/class', {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Accept: '*/*',
+                            Authorization: `Bearer ${auth.accessToken}`,
+                        },
+                        withCredentials: true,
+                    });
+                }
+
+                setTopics(response.data);
+            } catch (error) {
+                console.error("Error fetching class data:", error.response?.data || error.message);
+            }
         }
-        fetchData();
-    }, [auth.accessToken]);
+
+        if (auth?.accessToken && auth?.role) {
+            fetchData();
+        }
+    }, [auth.accessToken, auth.role, auth.id]);
 
     useEffect(() => {
         async function fetchData() {
@@ -140,6 +167,13 @@ export default function ClassList({ initialAsset }) {
 
     return (
         <>
+            {variants.map((variant) => (
+                <Breadcrumbs underline="active" onAction={(key) => setCurrentPage(key)} key={variant} variant={variant}>
+                    <BreadcrumbItem key="class" isCurrent={currentPage === "class"}>
+                        Class
+                    </BreadcrumbItem>
+                </Breadcrumbs>
+            ))}
             {message && (
                 <div className="mb-4 p-4 bg-green-100 text-green-800 rounded-md">
                     {message}
@@ -152,26 +186,19 @@ export default function ClassList({ initialAsset }) {
             }
 
             {(auth?.role === 'ADMIN' || auth.role === 'PENGAJAR') && (
-                <button
-                    type="button"
-                    className="text-white mb-6 bg-blue rounded-full py-2 px-6 hover:shadow-sm hover:bg-sky-500"
-                >
-                    <Link to="/class/add" className="grid gap-2 grid-flow-col">
-                        Add Class
-                        <Plus />
-                    </Link>
-                </button>
+                <div className='mb-8 flex justify-start'>
+                    <Button type="button" name="Add Class" route="/class/add" icon={<Plus />} />
+                </div>
             )}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="not-prose my-12 grid grid-cols-1 gap-6 sm:grid-cols-2">
                 {styledTopics.map((topic, index) => (
-                    <Topic
+                    <Card
                         topic={topic}
-                        color={topic.color}
-                        image={topic.img}
+                        route={`/class/meeting/${topic.id}`}
                         key={topic.id || index}
                         auth={auth}
                         onDelete={deleteData}
-                        assessments={assesment[topic.id] || []} // Pass assessments for the class
+                        assessments={assesment[topic.id] || []}
                         onJoin={joinClass}
                         joinedClass={joinedClass}
                         onLeave={leaveClass}
@@ -180,53 +207,6 @@ export default function ClassList({ initialAsset }) {
                 ))}
             </div>
         </>
-    );
-}
-
-function Topic({ topic, color, image, auth, onDelete, assessments, onJoin, joinedClass, isJoined, onLeave }) {
-    const assessmentCount = assessments.length;
-
-    return (
-        <div
-            style={{ backgroundColor: color }}
-            className="w-full h-[237px] shadow rounded-lg p-4 hover:shadow-md transition relative z-0 flex flex-col justify-between"
-        >
-
-            {(auth?.role === 'ADMIN' || auth.role === 'PENGAJAR') && (
-                <button
-                    className="absolute top-4 right-4 rounded-full w-6 h-6 bg-red-500 text-white flex items-center justify-center text-xs leading-none hover:shadow-md transition"
-                    onClick={() => onDelete(topic.id)}
-                >
-                    x
-                </button>
-            )}
-            <div>
-                <div className="flex items-start justify-between">
-                    <img src={image} alt="Logo" className="w-max h-auto" />
-                    {auth?.role === "SISWA" && (
-                        <button
-                            onClick={() => (isJoined ? onLeave(topic.id) : onJoin(topic.id))}
-                            className={`mt-2 w-fit px-2 py-1 rounded-full text-sm shadow transition ${isJoined ? "bg-red-500 hover:bg-red-600 text-white" : "bg-[#FFA62B] hover:bg-orange text-[#343A40]"
-                                }`}
-                        >
-                            {isJoined ? "Leave Class" : "Join Class"}
-                        </button>
-                    )}
-                </div>
-                <p className="pt-4 font-semibold uppercase">{topic.name}</p>
-            </div>
-
-            <Link to={`/class/meeting/${topic.id}`} className="bg-white rounded-lg grid grid-cols-1 lg:grid-cols-2 p-2 lg:divide-x-2">
-                <div className="flex justify-center text-sm">
-                    <ClipboardListIcon />
-                    <span className="px-2">Assessment: {assessmentCount}</span>
-                </div>
-                <div className="lowercase flex justify-center text-sm">
-                    <UsersRound />
-                    <span className="px-2">Student:</span> {topic.quantity}
-                </div>
-            </Link>
-        </div>
     );
 }
 

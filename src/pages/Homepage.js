@@ -7,12 +7,8 @@ import Footer from '../components/Footer';
 export default function Homepage() {
     return (
         <div className="Homepage">
-            <div className='absolute z-10 w-full'>
-                <Navbar />
-            </div>
-            <div className='relative z-0'>
-                <Header />
-            </div>
+            <Navbar />
+            <Header />
             <About />
             <Testimonial />
             <Footer />

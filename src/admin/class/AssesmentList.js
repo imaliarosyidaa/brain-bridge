@@ -1,8 +1,9 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, Route, useParams } from 'react-router-dom';
 import { NotebookPenIcon, ArrowRight, BookOpen, Clock, PlusCircle } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 import axios from '../../api/axios';
 import useAuth from '../../hooks/useAuth';
+import List from '../../components/List';
 
 export default function AssessmentList() {
     const { auth, setAuth } = useAuth();
@@ -106,9 +107,9 @@ export default function AssessmentList() {
     }, [kelasSiswa, auth.accessToken, fetchAssessments]);
 
     return (
-        <div className="bg-[#48CAE4] max-h-screen h-full rounded-md p-6 overflow-y-auto">
+        <>
             <div className='flex items-center mb-4'>
-                <h1 className="font-bold text-white text-lg">Assesment</h1>
+                <h1 className="font-semibold text-slate-800 text-lg">Assesment</h1>
                 {(auth?.role === 'ADMIN' || auth.role === 'PENGAJAR') && (
                     <Link to={`/class/assesment/add/${id}`} className='ml-2'>
                         <PlusCircle fill='white' color='#48CAE4' />
@@ -116,61 +117,12 @@ export default function AssessmentList() {
                 )}
             </div>
             {assessments.length === 0 ? <p className='italic flex text-gray-500 justify-center relative top-1/2'>-No assessment in this class-</p> :
-                <div className="grid grid-cols-1 gap-6">
+                <div className="grid grid-cols-1 gap-2">
                     {assessments.map((item, index) => (
-                        <AssessmentItem assessment={item} key={index} auth={auth} />
+                        <List data={item.title} key={index} auth={auth} route={`/class/assessment/detail?assesment_id=${item.id}`} />
                     ))}
                 </div>
             }
-        </div>
-    );
-}
-
-function AssessmentItem({ assessment, auth }) {
-    const formattedDeadline = new Date(assessment.deadline).toLocaleDateString('id-ID', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-    });
-
-    const linkTo = (auth.role === "ADMIN" || auth.role === "PENGAJAR")
-        ? `/class/assessment/detail/submited/${assessment.id}`
-        : `/class/assessment/detail/${assessment.id}`;
-
-        console.log(assessment.id)
-    return (
-        <Link
-            to={`/class/assessment/detail/submited/${assessment.id}`}
-            className="bg-[#FFD60A] shadow rounded-lg p-2 hover:shadow-md transition duration-300 ease-in-out hover:bg-yellow-200"
-        >
-            <div className="flex items-center justify-between">
-                <div className='flex items-center'>
-                    <div className=" bg-white rounded-sm p-2 w-max h-max">
-                        <NotebookPenIcon color="#D7BC0B" />
-                    </div>
-                    <div className="pl-4">
-                        <p className="font-bold text-gray-800">{assessment.title}</p>
-                    </div>
-                </div>
-                <div className="col-span-1 flex justify-end items-center">
-                    <ArrowRight />
-                </div>
-            </div>
-
-            <div className="pt-1 flex items-center flex-wrap gap-1">
-                <div className="text-sm flex items-center text-gray-700">
-                    <span className="p-2">
-                        <BookOpen />
-                    </span>
-                    {assessment?.kelas?.name}
-                </div>
-                <div className="text-sm flex items-center text-gray-700">
-                    <span className="p-2">
-                        <Clock />
-                    </span>
-                    {formattedDeadline}
-                </div>
-            </div>
-        </Link>
+        </>
     );
 }

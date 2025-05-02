@@ -1,6 +1,6 @@
 import { NotebookPenIcon, Edit, FileSlidersIcon, ArrowDownCircleIcon } from 'lucide-react';
 import useAuth from '../../hooks/useAuth';
-import { Form, useParams } from 'react-router-dom';
+import { Form, useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from '../../api/axios';
 
@@ -10,8 +10,13 @@ export default function AssesmentDetail() {
     const { auth } = useAuth();
     const [assessment, setAssessment] = useState('');
     const [jawaban, setJawaban] = useState('');
+    const [jawabanSiswa, setJawabanSiswa] = useState('');
     const [jawabanText, setJawabanText] = useState('');
-    const { id } = useParams();
+    // const { id } = useParams();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const id = queryParams.get('assesment_id');
+    const siswaId = queryParams.get('siswa_id');
     const [success, setSuccess] = useState(null);
     const [error, setError] = useState(null);
     const [uploading, setUploading] = useState(false);
@@ -129,6 +134,25 @@ export default function AssesmentDetail() {
     }, [id, auth.accessToken]);
 
     useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await axios.get(`/api/jawaban/${siswaId}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: '*/*',
+                        Authorization: `Bearer ${auth.accessToken}`,
+                    },
+                    withCredentials: true,
+                });
+                setJawabanSiswa(response?.data);
+            } catch (error) {
+                console.error('Error fetching meetings:', error);
+            }
+        }
+        fetchData();
+    }, [id, auth.accessToken, siswaId]);
+
+    useEffect(() => {
         setUpdatedNilai(jawaban.nilai)
     }, [jawaban.nilai]);
 
@@ -220,36 +244,60 @@ export default function AssesmentDetail() {
                     <form method="POST" onSubmit={handleUpload} className="grid gap-4">
                         <h2 className="font-bold pt-3 text-gray-800">Description</h2>
                         <div className="h-40 bg-pink p-2 rounded-md overflow-auto">
-                            <textarea
-                                id="jawabanText"
-                                name="jawabanText"
-                                value={jawabanText}
-                                onChange={(e) => setJawabanText(e.target.value)}
-                                className="w-full h-full bg-transparent focus:outline-none"
-                                placeholder="Input here..">
-                            </textarea>
-                        </div>
-
-                        <div>
-                            {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-                            {success && <p className="text-green-500 text-sm mb-4">{success}</p>}
-
-                            <input
-                                id="file-upload"
-                                type="file"
-                                accept=".pdf,.doc,.docx"
-                                onChange={handleFileUpload}
-                                className="shadow-md px-4 py-2 rounded-md block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-[1px] file:text-sm file:font-semibold file:bg-white file:border-[#10B981] file:text-blue-700 hover:file:bg-teal-50"
-                            />
-                            {uploadingFile && (
-                                <div className="mt-4">
-                                    <p className="text-sm text-gray-600 mb-2">Uploading: {uploadingFile.name}</p>
-                                    <div className="w-full bg-gray-200 rounded-full h-2">
-                                        <div className="bg-blue-500 h-2 rounded-full w-3/4"></div>
-                                    </div>
-                                </div>
+                            {(auth.role === 'SISWA') && (
+                                <textarea
+                                    id="jawabanText"
+                                    name="jawabanText"
+                                    value={jawabanText}
+                                    onChange={(e) => setJawabanText(e.target.value)}
+                                    className="w-full h-full bg-transparent focus:outline-none"
+                                    placeholder="Input here..">
+                                </textarea>
+                            )}
+                            {(auth.role === 'ADMIN' || auth.role === 'PENGAJAR') && (
+                                <textarea
+                                    id="jawabanText"
+                                    name="jawabanText"
+                                    value={jawabanSiswa.jawaban}
+                                    className="w-full h-full bg-transparent focus:outline-none"
+                                    placeholder="Input here..">
+                                </textarea>
                             )}
                         </div>
+                        {(auth.role === 'SISWA') && (
+                            <div>
+                                {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+                                {success && <p className="text-green-500 text-sm mb-4">{success}</p>}
+
+                                <input
+                                    id="file-upload"
+                                    type="file"
+                                    accept=".pdf,.doc,.docx"
+                                    onChange={handleFileUpload}
+                                    className="shadow-md px-4 py-2 rounded-md block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-[1px] file:text-sm file:font-semibold file:bg-white file:border-[#10B981] file:text-blue-700 hover:file:bg-teal-50"
+                                />
+                                {uploadingFile && (
+                                    <div className="mt-4">
+                                        <p className="text-sm text-gray-600 mb-2">Uploading: {uploadingFile.name}</p>
+                                        <div className="w-full bg-gray-200 rounded-full h-2">
+                                            <div className="bg-blue-500 h-2 rounded-full w-3/4"></div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                        {(auth.role === 'ADMIN' || auth.role === 'PENGAJAR') && (
+                            <a
+                                href={jawabanSiswa.file} // URL atau path file yang bisa diunduh
+                                download
+                                className="text-blue-500 flex"
+                            >
+                                <div className='bg-black w-8 h-8 mr-4 rounded-full flex items-center justify-center'>
+                                    <FileSlidersIcon color='white' />
+                                </div>
+                                Klik untuk mengunduh file
+                            </a>
+                        )}
 
                         <div className="flex justify-between items-center">
                             <form method='PUT' onSubmit={addNilai}>

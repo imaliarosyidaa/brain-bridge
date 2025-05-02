@@ -54,12 +54,12 @@ export default function Signup() {
 
     return (
         <div className="App">
-            <div className="register-page content-center min:h-screen h-max py-9 w-full bg-gradient-to-b from-[#FFD60A] to-[#FFA62B]">
-                <div className="container mx-auto max-w-4xl rounded overflow-hidden shadow-lg bg-white p-8 lg:pt-6 lg:pb-10 lg:px-4">
+            <div className="register-page content-center min:h-screen h-max py-9 w-full bg-gradient-to-b">
+                <div className='container mx-auto max-w-4xl rounded-2xl overflow-hidden bg-white lg:pt-6 lg:pb-10 lg:px-4 p-8 shadow-lg' style={{ border: "1px solid rgb(222, 226, 230)" }}>
                     <div className="flex content-center">
                         <div>
                             <Link to="/">
-                                <img src={logo} alt="logo" />
+                                <img src={logo} alt="logo" className='w-52' />
                             </Link>
                         </div>
                         <div className="text-start py-8 px-12">
@@ -86,7 +86,7 @@ export default function Signup() {
                                         type="text"
                                         name="first-name"
                                         id="first-name"
-                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                                        className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
                             </div>
@@ -101,7 +101,7 @@ export default function Signup() {
                                         type="text"
                                         name="last-name"
                                         id="last-name"
-                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                                        className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
                             </div>
@@ -117,7 +117,7 @@ export default function Signup() {
                                     type="email"
                                     name="email"
                                     id="email"
-                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                                    className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
                             </div>
                         </div>
@@ -133,7 +133,7 @@ export default function Signup() {
                                         type="password"
                                         name="password"
                                         id="password"
-                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                                        className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
                             </div>
@@ -148,7 +148,7 @@ export default function Signup() {
                                         type="password"
                                         name="confirm-password"
                                         id="confirm-password"
-                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                                        className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
                             </div>
@@ -157,7 +157,7 @@ export default function Signup() {
                             Use 8 or more characters with a mix of letters, numbers & symbols.
                         </p>
                         <div className="flex justify-end mt-6">
-                            <button type="submit" className="bg-[#48CAE4] py-3 px-7 rounded-3xl">
+                            <button type="submit" className="bg-cyan-500 shadow-lg shadow-cyan-500/25 hover:bg-cyan-500/75 py-2 w-full rounded-lg text-white font-bold">
                                 Create an account
                             </button>
                         </div>

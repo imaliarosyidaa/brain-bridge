@@ -46,19 +46,15 @@ export default function SubmitedList() {
                     </thead>
                     <tbody>
                         {jawaban.map((row, index) => (
-                            <tr
-                                key={row.id}
-                                className={`${index % 2 === 0 ? 'bg-[#48CAE4]' : 'bg-[#C0E0EF]'} text-gray-800`}
-                            >
+                            <tr className={`${index % 2 === 0 ? 'bg-[#48CAE4]' : 'bg-[#C0E0EF]'} text-gray-800`}>
                                 <td className="px-6 py-4 border-b border-gray-200">{row.id}</td>
                                 <td className="px-6 py-4 border-b border-gray-200">{row.assesment_id}</td>
                                 <td className="px-6 py-4 border-b border-gray-200">{row.siswa_id}</td>
                                 <td className="px-6 py-4 border-b border-gray-200">{row.nilai || 'Belum Dinilai'}</td>
                                 <td className="px-6 py-4 border-b border-gray-200">
                                     <Link
-                                        to={row.file}
+                                        to={`/class/assessment/detail?assesment_id=${row.assesments.id}&siswa_id=${row.id}`}
                                         className="text-blue-500 flex items-center gap-2"
-                                        target="_blank"
                                         rel="noopener noreferrer"
                                     >
                                         <Eye size={16} />

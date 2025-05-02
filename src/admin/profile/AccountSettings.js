@@ -68,7 +68,7 @@ const AccountSettings = () => {
     return (
         <div className="max-w-4xl mx-auto p-6 bg-white shadow rounded-lg">
             <Tab />
-            <form className="px-16" onSubmit={updateProfile} method="PUT">
+            <form onSubmit={updateProfile} method="PUT">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">

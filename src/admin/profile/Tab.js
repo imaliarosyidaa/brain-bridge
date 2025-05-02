@@ -6,12 +6,12 @@ export default function Tab() {
     const isActive = (path) => location.pathname === path;
 
     return (
-        <div className="flex border-b mb-6">
+        <div className="flex border-b mb-6 gap-8">
             <Link to="/profile">
                 <button
-                    className={`px-4 py-2 font-semibold ${isActive("/profile")
-                        ? "text-orange-500 border-b-2 border-orange-500"
-                        : "text-gray-500 hover:text-orange-500"
+                    className={`py-2 font-semibold ${isActive("/profile")
+                        ? "text-blue-500 border-b-2 border-blue-500"
+                        : "text-gray-500 hover:text-blue-500"
                         }`}
                 >
                     Account Setting
@@ -19,9 +19,9 @@ export default function Tab() {
             </Link>
             <Link to="/change/password">
                 <button
-                    className={`px-4 py-2 font-semibold ${isActive("/change/password")
-                        ? "text-orange-500 border-b-2 border-orange-500"
-                        : "text-gray-500 hover:text-orange-500"
+                    className={`py-2 font-semibold ${isActive("/change/password")
+                        ? "text-blue-500 border-b-2 border-blue-500"
+                        : "text-gray-500 hover:text-blue-500"
                         }`}
                 >
                     Password

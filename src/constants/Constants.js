@@ -8,13 +8,7 @@ import book2 from "../logo/book-2.png"
 import book3 from "../logo/book-3.png"
 import book4 from "../logo/book-4.png"
 import book5 from "../logo/book-4.png"
-import TopicList from "../admin/class/ClassList"
-import MeetingList from '../admin/class/MeetingList'
-import VideoList from '../admin/class/VideoList'
 import VideoCover from '../logo/video-cover.png'
-import MaterialList from '../admin/class/MaterialList'
-import PreviewSection from '../admin/class/PreviewSection'
-import SummarySection from '../admin/class/SummarySection'
 
 export const initialAsset = [
     { id: 1, img: programming, color: "#E1E2F6" },

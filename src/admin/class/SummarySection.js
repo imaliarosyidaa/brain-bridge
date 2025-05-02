@@ -55,11 +55,9 @@ export default function SummarySection({ summary, setSummary }) {
     }, [id, auth.accessToken, setSummary, summary]);
 
     return (
-        <div className="bg-[#48CAE4] rounded-2xl m-4 overflow-y-auto h-full">
-            {/* Header */}
-            <div className="font-bold text-white px-4 pt-2 flex items-center">
-                <LucideNotebookText fill="#FFD60A" color="#48CAE4" />
-                <span className="ml-2">Summary Course</span>
+        <div className="h-fit">
+            <div className="font-bold flex items-center">
+                <h1 className="inline-block mb-2 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">Summary Course</h1>
                 {(auth?.role === "ADMIN" || auth.role === "PENGAJAR") && (
                     <Link
                         to={`/class/assesment/add/${id}`}
@@ -70,30 +68,9 @@ export default function SummarySection({ summary, setSummary }) {
                 )}
             </div>
 
-            {/* Editable Summary Section */}
-            <div className="m-2 rounded-lg text-xs p-1 bg-[#F5F5F5] min-h-full">
-                <form method="PUT" onSubmit={updateSummary}>
-                    <textarea
-                        className={`w-full h-96 bg-transparent p-2 rounded-md border-none focus:outline-none ${isEditing ? "border border-gray-300 focus:ring-2 focus:ring-blue-500" : ""}`}
-                        value={updatedSummary}
-                        readOnly={!isEditing}
-                        onClick={() => setIsEditing(true)}
-                        onChange={(e) => setUpdatedSummary(e.target.value)}
-                        placeholder="There is no summary in this meeting"
-                    >
-                        {summary}
-                    </textarea>
-                    {isEditing && (
-                        <div className="flex justify-end mt-2">
-                            <button
-                                type="submit"
-                                className="bg-blue text-white px-4 py-2 rounded-md hover:bg-blue-600"
-                            >
-                                Save
-                            </button>
-                        </div>
-                    )}
-                </form>
+            <h2 className="inline-block mb-2 text-2xl font-reguler tracking-tight text-gray-900 dark:text-white">Introduction</h2>
+            <div className="m-2 rounded-lg text-xs p-1 min-h-fit">
+                {summary}
             </div>
         </div>
     );

@@ -3,6 +3,7 @@ import { Mail, XCircleIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import axios from '../../api/axios';
 import useAuth from '../../hooks/useAuth';
+import List from '../../components/List';
 
 export default function SiswaClasses({ assessment }) {
     const { auth } = useAuth();
@@ -49,39 +50,17 @@ export default function SiswaClasses({ assessment }) {
     }, [id, auth.accessToken]);
 
     return (
-        <div className="bg-[#48CAE4] max-h-screen h-full rounded-md p-6 overflow-y-auto">
+        <div className="max-w-full min-w-full mx-auto max-h-screen">
             <div className='flex items-center mb-4'>
-                <h1 className="font-bold text-white text-lg">Student</h1>
+                <h1 className="font-semibold text-slate-800 text-lg">Student</h1>
             </div>
             {students.length === 0 ? <p className='italic flex text-gray-500 justify-center relative top-1/2'>-No student joined the class-</p> :
                 <div className="grid grid-cols-1 gap-6">
                     {students.map((item, index) => (
-                        <SiswaKelasItem siswa={item} key={index} onDelete={deleteData} />
+                        <List data={item.name} key={index} onDelete={deleteData} />
                     ))}
                 </div>
             }
-        </div>
-    );
-}
-
-function SiswaKelasItem({ siswa, onDelete }) {
-    return (
-        <div className="bg-[#FFD60A] shadow rounded-lg p-2 hover:shadow-md transition duration-300 ease-in-out hover:bg-yellow-200">
-            <div className="flex items-center justify-between">
-                <div className='flex items-center'>
-                    <div className=" bg-white rounded-sm w-12 h-12">
-                        {/* <NotebookPenIcon color="#D7BC0B" /> */}
-                        <image src={siswa.foto} alt={siswa.foto} />
-                    </div>
-                    <div className="pl-4">
-                        <p className="font-bold text-gray-800">{siswa.name}</p>
-                        <p className="font-light text-sm text-gray-800 grid-flow-col gap-2 grid"><Mail color='#FFD60A' fill='white' />{siswa.email}</p>
-                    </div>
-                </div>
-                <button onClick={() => onDelete(siswa.id)}>
-                    <XCircleIcon fill='red' color='#FFD60A' />
-                </button>
-            </div>
         </div>
     );
 }
