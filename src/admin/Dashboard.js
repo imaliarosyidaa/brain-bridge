@@ -75,7 +75,7 @@ export default function Dashboard() {
             <div className="flex h-screen">
                 {sidebar}
                 <main className={`transition-all duration-300 ml-[50vh] flex-1 bg-white`}>
-                    <div className="h-full container mx-auto p-4">
+                    <div className="h-screen container mx-auto p-4 overflow-auto">
                         <Outlet />
                     </div>
                 </main>

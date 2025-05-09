@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Tab from "./Tab";
 import { EyeIcon, EyeOff } from "lucide-react";
 import axios from "../../api/axios";
@@ -53,9 +53,16 @@ export default function ChangePassword() {
             alert("update failed, please check your credentials.");
         }
     }
+    
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+          document.body.style.overflow = 'auto';
+        };
+      }, []);
 
     return (
-        <div className="max-w-4xl mx-auto p-6 bg-white shadow rounded-lg">
+        <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg">
             <Tab />
 
             <form onSubmit={updatePassword} method="PUT">

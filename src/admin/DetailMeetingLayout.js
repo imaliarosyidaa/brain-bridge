@@ -66,6 +66,13 @@ export default function DetailClassLayout() {
         }
     }, [detailMeetings]);
 
+
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, []);
     return (
         <>
             {variants.map((variant) => (

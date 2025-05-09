@@ -65,8 +65,15 @@ const AccountSettings = () => {
         }
     }
 
+
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, []);
     return (
-        <div className="max-w-4xl mx-auto p-6 bg-white shadow rounded-lg">
+        <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg">
             <Tab />
             <form onSubmit={updateProfile} method="PUT">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import AssesmentList from "./class/AssesmentList";
@@ -14,6 +14,13 @@ export default function DetailClassLayout({ topic, meetings, assessment }) {
     const [currentPage, setCurrentPage] = useState("detail");
     const variants = ["light"];
 
+
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, []);
     return (
         <>                        {variants.map((variant) => (
             <Breadcrumbs underline="active" onAction={(key) => setCurrentPage(key)} key={variant} variant={variant}>

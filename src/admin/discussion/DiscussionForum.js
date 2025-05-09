@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { GoogleGenAI } from "@google/genai";
 import ChatHistory from "../../components/ChatHistory";
 import Loading from "../../components/Loading";
@@ -20,6 +20,7 @@ export default function ChatApp() {
     const sendMessage = async () => {
         if (!userInput.trim()) return;
 
+        setIsLoading(true);
         setChatHistory((prev) => [...prev, { type: "user", message: userInput }]);
 
         try {
@@ -42,6 +43,13 @@ export default function ChatApp() {
         setChatHistory([]);
         setUserInput("");
     };
+
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, []);
 
     return (
         <div className="container mx-auto px-4 py-8">
