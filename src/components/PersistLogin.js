@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
+import logo from '../brain-bridge-logo.png';
 import useRefreshToken from "../hooks/useRefreshToken";
 import useAuth from "../hooks/useAuth";
 
@@ -15,25 +16,31 @@ const PersistLogin = () => {
             } catch (error) {
                 console.error("Error refreshing token:", error.message);
             } finally {
-                setIsLoading(false);
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 1000);
             }
         };
 
         if (!auth?.accessToken) {
             verifyRefreshToken();
         } else {
-            setIsLoading(false);
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 1000);
         }
     }, [auth?.accessToken, refresh]);
 
-    useEffect(() => {
-        console.log(`isLoading: ${isLoading}`);
-        console.log(`Auth Access Token: ${auth?.accessToken ? auth.accessToken : "undefined"}`);
-    }, [isLoading, auth?.accessToken]);
-
     return (
         <>
-            {isLoading ? <p>Loading...</p> : <Outlet />}
+            {isLoading ? (
+                <div className="flex flex-col justify-center items-center h-screen">
+                    <img src={logo} alt="logo" className='w-40 animate-pulse' />
+                    <div className="text-gray-500 font-medium">Loading</div>
+                </div>
+            ) : (
+                <Outlet />
+            )}
         </>
     );
 };

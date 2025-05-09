@@ -20,10 +20,10 @@ export default function ChatApp() {
     const sendMessage = async () => {
         if (!userInput.trim()) return;
 
-        setIsLoading(true);
         setChatHistory((prev) => [...prev, { type: "user", message: userInput }]);
 
         try {
+            setIsLoading(true);
             const response = await ai.models.generateContent({
                 model: "gemini-2.0-flash",
                 contents: userInput,
@@ -33,6 +33,7 @@ export default function ChatApp() {
             setChatHistory((prev) => [...prev, { type: "bot", message: text }]);
             setUserInput("");
         } catch (error) {
+            setIsLoading(false);
             console.error("Error generating response:", error);
         } finally {
             setIsLoading(false);

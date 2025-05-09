@@ -83,7 +83,7 @@ export default function AdminUsers() {
     };
 
     return (
-        <div className="max-w-4xl mx-auto p-6 bg-white shadow rounded-lg">
+        <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg">
             <Tab />
             <div className="overflow-x-auto">
                 <table className="min-w-full table-auto border-collapse border border-gray-200">

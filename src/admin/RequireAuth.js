@@ -22,6 +22,6 @@ export default function RequireAuth({ allowedRoles }) {
         hasRequiredRole ? <Outlet />
             : auth?.user
                 ? <Navigate to="/" state={{ from: location }} replace />
-                : <Navigate to="/login" state={{ from: location }} replace />
+                : <Navigate to="/signin" state={{ from: location }} replace />
     )
 }

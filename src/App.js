@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import './App.css';
-import Login from "./auth/Login"
+import Signin from "./auth/Signin"
 import Signup from "./auth/Signup"
 import Homepage from "./pages/Homepage"
 import Pagenotfound from "./pages/Pagenotfound"
@@ -46,7 +46,7 @@ export default function App() {
       <Routes>
         {/* Route public */}
         <Route path="/" element={<Homepage />} />
-        <Route path="login" element={<Login />} />
+        <Route path="signin" element={<Signin />} />
         <Route path="signup" element={<Signup />} />
 
         {/* Chatch all */}

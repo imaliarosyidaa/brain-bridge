@@ -85,8 +85,8 @@ export default function Navbar() {
                                 <Link to="/dicussion" class="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-slate-100">Tanya AI</Link>
                                 <Link to="/topics" class="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-slate-100">Settings</Link>
                                 {!isLogin && (
-                                    <Link to="/login" class="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-slate-100">
-                                        Login
+                                    <Link to="/signin" class="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-slate-100">
+                                        Sign In
                                     </Link>
                                 )}
                                 {!isLogin && (
@@ -118,8 +118,8 @@ export default function Navbar() {
                     <Link to="/dicussion" class="block rounded-md px-3 py-2 text-base font-medium text-[#1E1E1E] hover:bg-slate-100">Tanya AI</Link>
                     <Link to="/topics" class="block rounded-md px-3 py-2 text-base font-medium text-[#1E1E1E] hover:bg-slate-100">Topik</Link>
                     {!isLogin && (
-                        <Link to="/login" class="block rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-slate-100">
-                            Login
+                        <Link to="/signin" class="block rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-slate-100">
+                            Sign In
                         </Link>
                     )}
                     {!isLogin && (

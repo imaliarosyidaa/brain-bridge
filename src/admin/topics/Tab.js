@@ -8,21 +8,21 @@ export default function Tab() {
 
     return (
         <div className="flex border-b mb-6">
-            <Link to="/topic">
+            <Link to="/topics">
                 <button
-                    className={`px-4 py-2 font-semibold ${isActive("/topic")
-                        ? "text-orange-500 border-b-2 border-orange-500"
-                        : "text-gray-500 hover:text-orange-500"
+                    className={`px-4 py-2 font-semibold ${isActive("/topics")
+                        ? "text-blue-500 border-b-2 border-blue-500"
+                        : "text-gray-500 hover:text-blue-500"
                         }`}
                 >
                     Topic List
                 </button>
             </Link>
-            <Link to="/topic/create">
+            <Link to="/topics/create">
                 <button
-                    className={`px-4 py-2 font-semibold flex ${isActive("/topic/create")
-                        ? "text-orange-500 border-b-2 border-orange-500"
-                        : "text-gray-500 hover:text-orange-500"
+                    className={`px-4 py-2 font-semibold flex ${isActive("/topics/create")
+                        ? "text-blue-500 border-b-2 border-blue-500"
+                        : "text-gray-500 hover:text-blue-500"
                         }`}
                 >
                     Create New Topic

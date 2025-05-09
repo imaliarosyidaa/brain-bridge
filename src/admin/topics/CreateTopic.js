@@ -40,12 +40,12 @@ export default function ChangePassword() {
     }
 
     return (
-        <div className="max-w-4xl mx-auto p-6 bg-white shadow rounded-lg">
+        <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg">
             <Tab />
 
             <form onSubmit={createTopic} method="POST">
                 <div className="mb-4">
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-600">Topic Name</label>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-600">Topic Name <span className="text-red-500">*</span></label>
                     <input
                         type="text"
                         id="name"

@@ -67,7 +67,7 @@ export default function ChangePassword() {
 
             <form onSubmit={updatePassword} method="PUT">
                 <div className="mb-4">
-                    <label htmlFor="oldPassword" className="block text-sm font-medium text-gray-600">Old Password</label>
+                    <label htmlFor="oldPassword" className="block text-sm font-medium text-gray-600">Old Password <span className="text-red-500">*</span></label>
                     <div className="relative">
                         <input
                             type={showPassword ? "text" : "password"}
@@ -86,7 +86,7 @@ export default function ChangePassword() {
                     </div>
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="newPassword" className="block text-sm font-medium text-gray-600">New Password</label>
+                    <label htmlFor="newPassword" className="block text-sm font-medium text-gray-600">New Password <span className="text-red-500">*</span></label>
                     <input
                         type="text"
                         id="newPassword"
@@ -97,7 +97,7 @@ export default function ChangePassword() {
                     />
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-600">Confirm New Password</label>
+                    <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-600">Confirm New Password <span className="text-red-500">*</span></label>
                     <input
                         type="text"
                         id="confirmPassword"

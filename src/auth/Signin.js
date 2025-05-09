@@ -4,21 +4,22 @@ import google from '../google.png';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import axios from '../api/axios';
-const LOGIN_URL = '/api/auth/login';
+import { Button } from "@heroui/button";
+const LOGIN_URL = '/api/auth/Sign In';
 
-export default function Login() {
+export default function Signin() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errMsg, setErrMsg] = useState('');
     const userRef = useRef();
     const errRef = useRef();
-
     const { setAuth } = useAuth();
-
     const navigate = useNavigate();
     const location = useLocation();
     const defaultPath = "/";
     const from = location.state?.from?.pathname || defaultPath;
+    const [isLoading, setIsLoading] = useState(false);
+
 
     useEffect(() => {
         userRef.current.focus();
@@ -32,6 +33,7 @@ export default function Login() {
         e.preventDefault();
 
         try {
+            setIsLoading(true);
             const response = await axios.post(LOGIN_URL,
                 JSON.stringify({ email, password }),
                 {
@@ -53,10 +55,11 @@ export default function Login() {
                 }
             })
         } catch (error) {
-            console.error("Login error:", error);
-            alert("Login failed, please check your credentials.");
+            console.error("Sign In error:", error);
+            alert("Sign In failed, please check your credentials.");
+        } finally {
+            setIsLoading(false);
         }
-        //window.location.reload();
     }
 
     return (
@@ -70,13 +73,13 @@ export default function Login() {
                             </Link>
                         </div>
                         <div className='text-start py-8 px-12'>
-                            <h1 className="text-[32px]">Login</h1>
+                            <h1 className="text-[32px]">Sign In</h1>
                             <p>Don't have an account? <a href="/signup" className="underline underline-offset-2">Sign up</a></p>
                         </div>
                     </div>
                     <div className='grid grid-cols-1 gap-4 divide-x'>
                         {/* <div className="items-center flex flex-col">
-                            <h2 className="text-center pb-1 text-xl font-medium mb-5">Login</h2>
+                            <h2 className="text-center pb-1 text-xl font-medium mb-5">Sign In</h2>
                             <button className="border-solid border-[1px] border-gray-700 rounded-full block-inline flex justify-center w-fit px-7 py-3">
                                 <img src={google} className="pe-4" alt="google" />
                                 Continue with Google
@@ -84,9 +87,9 @@ export default function Login() {
                         </div> */}
                         <form className="px-12" onSubmit={handleSubmit} method='POST'>
                             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                            <h2 className="text-center pb-6 text-xl font-medium">Login with email</h2>
+                            <h2 className="text-center pb-6 text-xl font-medium">Sign In with email</h2>
                             <div className='col-span-1'>
-                                <label htmlFor="email" className="block font-medium text-[#666666] text-start">Email address</label>
+                                <label htmlFor="email" className="block font-medium text-[#666666] text-start">Email Address</label>
                                 <div className="mt-2">
                                     <input
                                         type="email"
@@ -118,7 +121,10 @@ export default function Login() {
                                 </div>
                             </div>
                             <div className="flex justify-center mt-6">
-                                <button type='submit' className="bg-cyan-500 shadow-lg shadow-cyan-500/25 hover:bg-cyan-500/75 py-2 w-full rounded-lg text-white font-bold">Login</button>
+                                {/* <button type='submit' className="bg-cyan-500 shadow-lg shadow-cyan-500/25 hover:bg-cyan-500/75 py-2 w-full rounded-lg text-white font-bold">Sign In</button> */}
+                                <Button type='submit' isLoading={isLoading} color="primary" className='w-full'>
+                                    Sign In
+                                </Button>
                             </div>
                         </form>
                     </div>

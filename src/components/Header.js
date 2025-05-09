@@ -34,7 +34,7 @@ export default function Header() {
                             type="button"
                             className=" bg-[#FFA62B] text-black font-semibold hover:bg-[#fbad3f] focus:outline-none px-5 h-10 rounded-full"
                         >
-                            <Link to="/login">
+                            <Link to="/signin">
                                 Mulai Sekarang
                             </Link>
                         </button>

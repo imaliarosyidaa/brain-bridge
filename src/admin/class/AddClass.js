@@ -107,12 +107,12 @@ export default function AddClass() {
                 </Breadcrumbs>
             ))}
 
-            <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
+            <div className="max-w-4xl mx-auto bg-white rounded-lg p-6">
                 <h1 className="text-xl font-bold text-gray-800 mb-6">Add Class</h1>
                 <form method="POST" onSubmit={addClass}>
                     <div className="grid grid-cols-1 gap-6">
                         <div>
-                            <label className="block font-semibold text-gray-700 mb-2">Class Title</label>
+                            <label className="block font-semibold text-gray-700 mb-2">Class Title <span className="text-red-500">*</span></label>
                             <input
                                 type="text"
                                 value={name}
@@ -123,7 +123,7 @@ export default function AddClass() {
                         </div>
 
                         <div>
-                            <label className="block font-semibold text-gray-700 mb-2">Description</label>
+                            <label className="block font-semibold text-gray-700 mb-2">Description <span className="text-red-500">*</span></label>
                             <textarea
                                 type="text"
                                 value={description}
@@ -154,7 +154,7 @@ export default function AddClass() {
                         )}
 
                         <div>
-                            <label className="block font-semibold text-gray-700 mb-2">Category</label>
+                            <label className="block font-semibold text-gray-700 mb-2">Category <span className="text-red-500">*</span></label>
                             <select
                                 value={topic_id}
                                 onChange={(e) => setTopic_id(parseInt(e.target.value, 10))}

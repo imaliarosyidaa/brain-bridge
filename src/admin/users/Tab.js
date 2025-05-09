@@ -10,8 +10,8 @@ export default function Tab() {
             <Link to="/users">
                 <button
                     className={`px-4 py-2 font-semibold ${isActive("/users")
-                        ? "text-orange-500 border-b-2 border-orange-500"
-                        : "text-gray-500 hover:text-orange-500"
+                        ? "text-blue-500 border-b-2 border-blue-500"
+                        : "text-gray-500 hover:text-blue-500"
                         }`}
                 >
                     Account admin
@@ -20,8 +20,8 @@ export default function Tab() {
             <Link to="/users/siswa">
                 <button
                     className={`px-4 py-2 font-semibold ${isActive("/users/siswa")
-                        ? "text-orange-500 border-b-2 border-orange-500"
-                        : "text-gray-500 hover:text-orange-500"
+                        ? "text-blue-500 border-b-2 border-blue-500"
+                        : "text-gray-500 hover:text-blue-500"
                         }`}
                 >
                     Account siswa
@@ -30,8 +30,8 @@ export default function Tab() {
             <Link to="/users/pengajar">
                 <button
                     className={`px-4 py-2 font-semibold ${isActive("/users/pengajar")
-                        ? "text-orange-500 border-b-2 border-orange-500"
-                        : "text-gray-500 hover:text-orange-500"
+                        ? "text-blue-500 border-b-2 border-blue-500"
+                        : "text-gray-500 hover:text-blue-500"
                         }`}
                 >
                     Account pengajar

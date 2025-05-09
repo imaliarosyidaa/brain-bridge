@@ -122,6 +122,7 @@ const AccountSettings = () => {
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                             Phone Number
+                            <span className="pl-1 text-gray-500">(Optional)</span>
                         </label>
                         <input
                             type="text"
@@ -137,6 +138,7 @@ const AccountSettings = () => {
                 <div className="mb-6">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                         What You Say
+                        <span className="pl-1 text-gray-500">(Optional)</span>
                     </label>
                     <textarea
                         name="description"

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import logo from '../brain-bridge-logo.png';
 import google from '../google.png';
 import { Link, useNavigate } from 'react-router-dom';
+import { Button } from "@heroui/button";
 
 export default function Signup() {
     const [first_name, setFirstName] = useState('');
@@ -11,6 +12,7 @@ export default function Signup() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
 
     async function signup(event) {
         event.preventDefault();
@@ -28,6 +30,7 @@ export default function Signup() {
         let item = { first_name, last_name, email, password };
 
         try {
+            setIsLoading(true)
             let response = await fetch('http://localhost:3000/api/auth/register', {
                 method: 'POST',
                 headers: {
@@ -45,10 +48,14 @@ export default function Signup() {
 
             let result = await response.json();
             localStorage.setItem('user-info', JSON.stringify(result));
-            navigate('/login');
+            navigate('/signin');
         } catch (error) {
+            setIsLoading(false);
             console.error("Error response:", error.response?.data || error.message);
             alert("Failed to add assessment. Please try again.");
+            setIsLoading(false)
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -63,11 +70,11 @@ export default function Signup() {
                             </Link>
                         </div>
                         <div className="text-start py-8 px-12">
-                            <h1 className="text-[32px]">Create an account</h1>
+                            <h1 className="text-[32px]">Sign Up</h1>
                             <p>
                                 Already have an account?{' '}
-                                <Link to="/login" className="underline underline-offset-2">
-                                    Log in
+                                <Link to="/signin" className="underline underline-offset-2">
+                                    Sign In
                                 </Link>
                             </p>
                         </div>
@@ -78,6 +85,7 @@ export default function Signup() {
                             <div className="col-span-3">
                                 <label htmlFor="first-name" className="block font-medium text-[#666666] text-start">
                                     First Name
+                                    <span className="text-red-500">*</span>
                                 </label>
                                 <div className="mt-2">
                                     <input
@@ -93,6 +101,7 @@ export default function Signup() {
                             <div className="col-span-3">
                                 <label htmlFor="last-name" className="block font-medium text-[#666666] text-start">
                                     Last Name
+                                    <span className="text-red-500">*</span>
                                 </label>
                                 <div className="mt-2">
                                     <input
@@ -109,6 +118,7 @@ export default function Signup() {
                         <div className="mt-4">
                             <label htmlFor="email" className="block font-medium text-[#666666] text-start">
                                 Email Address
+                                <span className="text-red-500">*</span>
                             </label>
                             <div className="mt-2">
                                 <input
@@ -125,6 +135,7 @@ export default function Signup() {
                             <div className="col-span-3">
                                 <label htmlFor="password" className="block font-medium text-[#666666] text-start">
                                     Password
+                                    <span className="text-red-500">*</span>
                                 </label>
                                 <div className="mt-2">
                                     <input
@@ -140,6 +151,7 @@ export default function Signup() {
                             <div className="col-span-3">
                                 <label htmlFor="confirm-password" className="block font-medium text-[#666666] text-start">
                                     Confirm Password
+                                    <span className="text-red-500">*</span>
                                 </label>
                                 <div className="mt-2">
                                     <input
@@ -153,13 +165,17 @@ export default function Signup() {
                                 </div>
                             </div>
                         </div>
-                        <p className="text-start text-[#666666]">
+                        <p className="text-start text-[#666666] pt-2">
+                            <span className="text-red-500">*</span>
                             Use 8 or more characters with a mix of letters, numbers & symbols.
                         </p>
                         <div className="flex justify-end mt-6">
-                            <button type="submit" className="bg-cyan-500 shadow-lg shadow-cyan-500/25 hover:bg-cyan-500/75 py-2 w-full rounded-lg text-white font-bold">
+                            {/* <button type="submit" className="bg-cyan-500 shadow-lg shadow-cyan-500/25 hover:bg-cyan-500/75 py-2 w-full rounded-lg text-white font-bold">
                                 Create an account
-                            </button>
+                            </button> */}
+                            <Button type='submit' isLoading={isLoading} color="primary" className='w-full'>
+                                Sign Up
+                            </Button>
                         </div>
                     </form>
                 </div>
