@@ -113,14 +113,14 @@ export default function AddMeeting() {
                     kelasId,
                     tittle: title,
                     description,
-                    videos: uploadedVideos.map((v, i) => ({
+                    videos: JSON.stringify(uploadedVideos.map((v, i) => ({
                         key: v.key,
                         title: videoTitles[i] || ""
-                    })),
-                    files: uploadedFiles.map((f) => ({
+                    }))),
+                    files: JSON.stringify(uploadedFiles.map((f) => ({
                         key: f.key,
                         name: f.file.name
-                    }))
+                    })))
                 }),
                 {
                     headers: {
