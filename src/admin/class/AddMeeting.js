@@ -223,7 +223,7 @@ export default function AddMeeting() {
                                 {uploadedVideos.map((video, index) => (
                                     <div key={index} className="mb-2">
                                         <div className="flex items-center justify-between bg-gray-100 rounded-lg p-4">
-                                            <span className="text-sm text-gray-600">{uploadingVideo.name}</span>
+                                            <span className="text-sm text-gray-600">{video.name}</span>
                                             <button
                                                 type="button"
                                                 onClick={() => handleVideoRemove(index)}
@@ -274,7 +274,7 @@ export default function AddMeeting() {
                                                 key={index}
                                                 className="flex items-center justify-between bg-blue-50 rounded-lg px-4 py-2 mb-2"
                                             >
-                                                <span className="text-sm text-gray-600">{uploadingFile.name}</span>
+                                                <span className="text-sm text-gray-600">{file.name}</span>
                                                 <button
                                                     type="button"
                                                     onClick={() => handleFileRemove(file.name)}
