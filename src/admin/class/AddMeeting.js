@@ -122,7 +122,7 @@ export default function AddMeeting() {
                 }))
             }, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    "Content-Type": "application/json",
                     Authorization: `Bearer ${auth.accessToken}`
                 },
                 withCredentials: true
