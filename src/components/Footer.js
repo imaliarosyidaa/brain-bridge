@@ -22,13 +22,13 @@ export default function Footer() {
                     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 pt-2">
                         <div className="flex items-center justify-center lg:justify-start">
                             <div>
-                                <i class="block mb-0 text-2xl rounded uil uil-envelope text-slate-800 dark:text-white"></i>
+                                <i className="block mb-0 text-2xl rounded uil uil-envelope text-slate-800 dark:text-white"></i>
                             </div>
                             <p className="pl-2">Brainbridge@gmail.com</p>
                         </div>
                         <div className="flex items-center justify-center lg:justify-start">
                             <div>
-                                <i class="block mb-0 text-2xl rounded uil uil-phone text-slate-800  dark:text-white"></i>
+                                <i className="block mb-0 text-2xl rounded uil uil-phone text-slate-800  dark:text-white"></i>
                             </div>
                             <p className="pl-2">+62 82334907089</p>
                         </div>
@@ -74,14 +74,14 @@ export default function Footer() {
                     </ul>
                 </div>
             </div>
-            <div class="bg-slate-800 py-2">
-                <div class="text-center">
-                    <p class="text-gray-400">
+            <div className="bg-slate-800 py-2">
+                <div className="text-center">
+                    <p className="text-gray-400">
                         ©
                         <script>
                             document.write(new Date().getFullYear());
                         </script>
-                        Brain Bridge <i class="text-gray-400 mdi mdi-at"></i>
+                        Brain Bridge <i className="text-gray-400 mdi mdi-at"></i>
                     </p>
                 </div>
             </div>

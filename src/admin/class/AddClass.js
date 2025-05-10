@@ -163,11 +163,14 @@ export default function AddClass() {
                                 <option value="" disabled>
                                     Select category
                                 </option>
-                                {topics.map((topic) => (
+                                {topics ? topics.map((topic) => (
                                     <option key={topic.id} value={topic.id}>
                                         {topic.name}
                                     </option>
-                                ))}
+                                )) :
+                                    <option>
+                                        Data Tidak Tersedia
+                                    </option>}
                             </select>
                         </div>
                     </div>

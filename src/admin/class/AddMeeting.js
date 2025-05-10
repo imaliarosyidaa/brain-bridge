@@ -25,16 +25,45 @@ export default function AddMeeting() {
         setKelasId(id);
     }, [id]);
 
-    const handleVideoUpload = (event) => {
+    const getSignedUrl = async (file, type) => {
+        try {
+            const response = await axios.post('/api/s3/upload-url', {
+                fileName: file.name,
+                fileType: file.type,
+                type, // "video" atau "file"
+            }, {
+                headers: {
+                    Authorization: `Bearer ${auth.accessToken}`,
+                }
+            });
+
+            return response.data; // { url, key }
+        } catch (error) {
+            console.error("Error getting signed URL:", error);
+            throw error;
+        }
+    };
+
+    const handleVideoUpload = async (event) => {
         const videoFile = event.target.files[0];
         if (!videoFile) return;
 
         setUploadingVideo(videoFile);
-        setTimeout(() => {
-            setUploadedVideos((prev) => [...prev, videoFile]);
+
+        try {
+            const { url, key } = await getSignedUrl(videoFile, "video");
+            await axios.put(url, videoFile, {
+                headers: { 'Content-Type': videoFile.type }
+            });
+
+            setUploadedVideos(prev => [...prev, { file: videoFile, key }]);
+        } catch (error) {
+            console.error("Upload to S3 failed:", error);
+        } finally {
             setUploadingVideo(null);
-        }, 2000);
+        }
     };
+
 
     const handleTitleChange = (index, value) => {
         setVideoTitles((prev) => ({ ...prev, [index]: value }));
@@ -49,15 +78,26 @@ export default function AddMeeting() {
         });
     };
 
-    const handleFileUpload = (event) => {
-        const files = Array.from(event.target.files);
-        setUploadingFile(files[0]);
+    const handleFileUpload = async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
 
-        setTimeout(() => {
-            setUploadedFiles((prev) => [...prev, ...files]);
+        setUploadingFile(file);
+
+        try {
+            const { url, key } = await getSignedUrl(file, "file");
+            await axios.put(url, file, {
+                headers: { 'Content-Type': file.type }
+            });
+
+            setUploadedFiles(prev => [...prev, { file, key }]);
+        } catch (error) {
+            console.error("Upload to S3 failed:", error);
+        } finally {
             setUploadingFile(null);
-        }, 2000);
+        }
     };
+
 
     const handleFileRemove = (fileName) => {
         setUploadedFiles((prev) => prev.filter((file) => file.name !== fileName));
@@ -67,23 +107,19 @@ export default function AddMeeting() {
         event.preventDefault();
 
         try {
-            const formData = new FormData();
-            formData.append('kelasId', kelasId);
-            formData.append('tittle', title);
-            formData.append('description', description);
-
-            if (uploadedVideos) {
-                uploadedVideos.forEach((video, index) => {
-                    formData.append(`vidio${index + 1}`, video);
-                    formData.append(`title_vid${index + 1}`, videoTitles[index] || "");
-                });
-            } else {
-                setErrorMessage("Max. 1 upload video dan materi")
-            }
-
-            uploadedFiles.forEach((file, index) => {
-                formData.append(`file_materi${index + 1}`, file);
-            });
+            const formData = {
+                kelasId,
+                tittle: title,
+                description,
+                videos: uploadedVideos.map((v, i) => ({
+                    key: v.key,
+                    title: videoTitles[i] || ""
+                })),
+                files: uploadedFiles.map((f) => ({
+                    key: f.key,
+                    name: f.file.name
+                }))
+            };
 
             const response = await axios.post('/api/meeting', formData, {
                 headers: {
@@ -98,6 +134,7 @@ export default function AddMeeting() {
             console.error("Error response:", error.response?.data || error.message);
         }
     }
+
 
     return (
         <>
@@ -170,7 +207,7 @@ export default function AddMeeting() {
                                     Upload Videos
                                     <span className="text-red-500">*</span>
                                 </label>
-                                <p class="my-2 text-xs text-gray-500">Only files with formats: MP4, MKV, AVI, or MOV are allowed.</p>
+                                <p className="my-2 text-xs text-gray-500">Only files with formats: MP4, MKV, AVI, or MOV are allowed.</p>
                                 <input
                                     type="file"
                                     accept="video/*"
@@ -182,7 +219,7 @@ export default function AddMeeting() {
                                 )}
 
                                 {uploadedVideos.map((video, index) => (
-                                    <div key={index} className="mb-4">
+                                    <div key={index} className="mb-2">
                                         <div className="flex items-center justify-between bg-gray-100 rounded-lg p-4">
                                             <span className="text-sm text-gray-600">{video.name}</span>
                                             <button
@@ -193,8 +230,9 @@ export default function AddMeeting() {
                                                 <Trash2 className="text-red-500" size={18} />
                                             </button>
                                         </div>
-                                        <label className="block text-sm font-medium text-gray-600 mt-2">
+                                        <label className="block text-sm font-medium mb-2 text-gray-600 mt-2">
                                             Video {index + 1} Title
+                                            <span className="pl-1 text-red-500">*</span>
                                         </label>
                                         <input
                                             type="text"
@@ -211,7 +249,7 @@ export default function AddMeeting() {
                             <label className="block font-semibold text-gray-700 mt-4 mb-2">Upload File
                                 <span className="text-red-500">*</span>
                             </label>
-                            <p class="my-2 text-xs text-gray-500">Only files with formats: PDF, or DOCX are allowed.</p>
+                            <p className="my-2 text-xs text-gray-500">Only files with formats: PDF, or DOCX are allowed.</p>
                             <div className="border-2 border-dashed border-blue-400 rounded-lg h-32 flex items-center justify-center cursor-pointer">
                                 <label htmlFor="file-upload" className="flex flex-col items-center">
                                     <CloudUpload className="text-blue-400 mb-2" size={36} />

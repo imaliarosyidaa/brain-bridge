@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import axios from '../api/axios';
 import { Button } from "@heroui/button";
-const LOGIN_URL = '/api/auth/Sign In';
+const LOGIN_URL = '/api/auth/login';
 
 export default function Signin() {
     const [email, setEmail] = useState("");

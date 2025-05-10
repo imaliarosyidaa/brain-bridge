@@ -28,8 +28,8 @@ export default function Navbar() {
 
     return (
         <nav>
-            <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px relative z-10 bg-white border">
-                <div class="relative flex h-16 items-center justify-between">
+            <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px relative z-10 bg-white border">
+                <div className="relative flex h-16 items-center justify-between">
                     <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                         <button
                             type="button"
@@ -72,20 +72,19 @@ export default function Navbar() {
                         </button>
                     </div>
 
-                    <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                        <div class="flex shrink-0 items-center">
-                            <Link to="/"><img class="h-14 w-auto" src={logo} alt="Your Company"></img></Link>
+                    <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                        <div className="flex shrink-0 items-center">
+                            <Link to="/"><img className="h-14 w-auto" src={logo} alt="Your Company"></img></Link>
                         </div>
                     </div>
-                    <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                        <div class="hidden sm:ml-6 sm:block">
-                            <div class="flex space-x-4">
-                                <Link to="/" class="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-slate-100" aria-current="page">Home</Link>
-                                <Link to="/class" class="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-slate-100">Kelas</Link>
-                                <Link to="/dicussion" class="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-slate-100">Tanya AI</Link>
-                                <Link to="/topics" class="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-slate-100">Settings</Link>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                        <div className="hidden sm:ml-6 sm:block">
+                            <div className="flex space-x-4">
+                                <Link to="/" className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-slate-100" aria-current="page">Home</Link>
+                                <Link to="/class" className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-slate-100">Kelas</Link>
+                                <Link to="/dicussion" className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-slate-100">Tanya AI</Link>
                                 {!isLogin && (
-                                    <Link to="/signin" class="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-slate-100">
+                                    <Link to="/signin" className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-slate-100">
                                         Sign In
                                     </Link>
                                 )}
@@ -98,7 +97,7 @@ export default function Navbar() {
                                     </Link>
                                 )}
                                 {isLogin && (
-                                    <Link onClick={handleLogout} class="block rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-slate-100">
+                                    <Link onClick={handleLogout} className="block rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-slate-100">
                                         Sign Out
                                     </Link>
                                 )}
@@ -112,13 +111,12 @@ export default function Navbar() {
                 className={`${menuOpen ? "block" : "hidden"
                     } sm:hidden" id="mobile-menu`}
             >
-                <div class="space-y-1 px-2 pb-3 pt-2">
-                    <Link to="/" class="block rounded-md px-3 py-2 text-base font-medium text-[#1E1E1E] hover:bg-slate-100" aria-current="page">Home</Link>
-                    <Link to="/class" class="block rounded-md px-3 py-2 text-base font-medium text-[#1E1E1E] hover:bg-slate-100">Kelas</Link>
-                    <Link to="/dicussion" class="block rounded-md px-3 py-2 text-base font-medium text-[#1E1E1E] hover:bg-slate-100">Tanya AI</Link>
-                    <Link to="/topics" class="block rounded-md px-3 py-2 text-base font-medium text-[#1E1E1E] hover:bg-slate-100">Topik</Link>
+                <div className="space-y-1 px-2 pb-3 pt-2">
+                    <Link to="/" className="block rounded-md px-3 py-2 text-base font-medium text-[#1E1E1E] hover:bg-slate-100" aria-current="page">Home</Link>
+                    <Link to="/className" className="block rounded-md px-3 py-2 text-base font-medium text-[#1E1E1E] hover:bg-slate-100">Kelas</Link>
+                    <Link to="/dicussion" className="block rounded-md px-3 py-2 text-base font-medium text-[#1E1E1E] hover:bg-slate-100">Tanya AI</Link>
                     {!isLogin && (
-                        <Link to="/signin" class="block rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-slate-100">
+                        <Link to="/signin" className="block rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-slate-100">
                             Sign In
                         </Link>
                     )}
@@ -128,7 +126,7 @@ export default function Navbar() {
                         </Link>
                     )}
                     {isLogin && (
-                        <Link class="block rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-slate-100" onClick={handleLogout}>
+                        <Link className="block rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-slate-100" onClick={handleLogout}>
                             Sign Out
                         </Link>
                     )}
