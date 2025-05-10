@@ -30,14 +30,14 @@ export default function AddMeeting() {
             const response = await axios.post('/api/s3/upload-url', {
                 fileName: file.name,
                 fileType: file.type,
-                type, // "video" atau "file"
+                type,
             }, {
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`,
                 }
             });
 
-            return response.data; // { url, key }
+            return response.data;
         } catch (error) {
             console.error("Error getting signed URL:", error);
             throw error;
@@ -107,7 +107,8 @@ export default function AddMeeting() {
         event.preventDefault();
 
         try {
-            const formData = {
+
+            const response = await axios.post('/api/meeting', {
                 kelasId,
                 tittle: title,
                 description,
@@ -119,9 +120,7 @@ export default function AddMeeting() {
                     key: f.key,
                     name: f.file.name
                 }))
-            };
-
-            const response = await axios.post('/api/meeting', formData, {
+            }, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${auth.accessToken}`
@@ -230,17 +229,6 @@ export default function AddMeeting() {
                                                 <Trash2 className="text-red-500" size={18} />
                                             </button>
                                         </div>
-                                        <label className="block text-sm font-medium mb-2 text-gray-600 mt-2">
-                                            Video {index + 1} Title
-                                            <span className="pl-1 text-red-500">*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={videoTitles[index] || ""}
-                                            onChange={(e) => handleTitleChange(index, e.target.value)}
-                                            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                            placeholder={`Enter title for video ${index + 1}`}
-                                        />
                                     </div>
                                 ))}
                             </div>
