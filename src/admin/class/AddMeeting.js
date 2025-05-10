@@ -108,25 +108,28 @@ export default function AddMeeting() {
 
         try {
 
-            const response = await axios.post('/api/meeting', {
-                kelasId,
-                tittle: title,
-                description,
-                videos: uploadedVideos.map((v, i) => ({
-                    key: v.key,
-                    title: videoTitles[i] || ""
-                })),
-                files: uploadedFiles.map((f) => ({
-                    key: f.key,
-                    name: f.file.name
-                }))
-            }, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${auth.accessToken}`
-                },
-                withCredentials: true
-            });
+            const response = await axios.post('/api/meeting',
+                JSON.stringify({
+                    kelasId,
+                    tittle: title,
+                    description,
+                    videos: uploadedVideos.map((v, i) => ({
+                        key: v.key,
+                        title: videoTitles[i] || ""
+                    })),
+                    files: uploadedFiles.map((f) => ({
+                        key: f.key,
+                        name: f.file.name
+                    }))
+                }),
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "*/*",
+                        Authorization: `Bearer ${auth.accessToken}`
+                    },
+                    withCredentials: true
+                });
             setMessage("Meeting added successfully");
         } catch (error) {
             setErrorMessage(error.response?.data.message)
@@ -220,7 +223,7 @@ export default function AddMeeting() {
                                 {uploadedVideos.map((video, index) => (
                                     <div key={index} className="mb-2">
                                         <div className="flex items-center justify-between bg-gray-100 rounded-lg p-4">
-                                            <span className="text-sm text-gray-600">{video.name}</span>
+                                            <span className="text-sm text-gray-600">{uploadingVideo.name}</span>
                                             <button
                                                 type="button"
                                                 onClick={() => handleVideoRemove(index)}
@@ -271,7 +274,7 @@ export default function AddMeeting() {
                                                 key={index}
                                                 className="flex items-center justify-between bg-blue-50 rounded-lg px-4 py-2 mb-2"
                                             >
-                                                <span className="text-sm text-gray-600">{file.name}</span>
+                                                <span className="text-sm text-gray-600">{uploadingFile.name}</span>
                                                 <button
                                                     type="button"
                                                     onClick={() => handleFileRemove(file.name)}
