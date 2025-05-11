@@ -169,6 +169,9 @@ export default function ClassList({ initialAsset }) {
         <>
             {variants.map((variant) => (
                 <Breadcrumbs underline="active" onAction={(key) => setCurrentPage(key)} key={variant} variant={variant}>
+                    <BreadcrumbItem key="home" href="/">
+                        Home
+                    </BreadcrumbItem>
                     <BreadcrumbItem key="class" isCurrent={currentPage === "class"}>
                         Class
                     </BreadcrumbItem>

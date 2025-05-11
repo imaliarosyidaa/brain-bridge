@@ -1,6 +1,5 @@
-import { LucideNotebookText, PencilIcon } from "lucide-react";
+import { PencilIcon } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
-import DetailMeetingLayout from "../DetailMeetingLayout";
 import { Link, useParams } from "react-router-dom";
 import axios from "../../api/axios";
 import { useEffect, useState } from "react";
@@ -9,7 +8,6 @@ export default function SummarySection({ summary, setSummary }) {
     const { auth } = useAuth();
     const { id } = useParams();
     const [updatedSummary, setUpdatedSummary] = useState(summary || "");
-    const [isEditing, setIsEditing] = useState(false);
 
     async function updateSummary(e) {
         e.preventDefault();
@@ -34,6 +32,7 @@ export default function SummarySection({ summary, setSummary }) {
             alert("Failed to update summary.");
         }
     }
+
     useEffect(() => {
         async function fetchData() {
             try {

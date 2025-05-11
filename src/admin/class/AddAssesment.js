@@ -73,6 +73,9 @@ export default function AddAssessment() {
         <>
             {variants.map((variant) => (
                 <Breadcrumbs underline="active" onAction={(key) => setCurrentPage(key)} key={variant} variant={variant}>
+                    <BreadcrumbItem key="home" href="/">
+                        Home
+                    </BreadcrumbItem>
                     <BreadcrumbItem href="/class">
                         Class
                     </BreadcrumbItem>

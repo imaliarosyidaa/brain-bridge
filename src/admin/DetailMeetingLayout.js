@@ -38,34 +38,48 @@ export default function DetailClassLayout() {
     }, [id, auth.accessToken]);
 
     useEffect(() => {
-        if (detailMeetings) {
-            const updatedVideos = [];
-            let index = 1;
-            while (detailMeetings[`vidio${index}`]) {
-                updatedVideos.push({
-                    vidio: detailMeetings[`vidio${index}`],
-                    title_vid: detailMeetings[`title_vid${index}`],
-                });
-                index++;
+        if (detailMeetings?.videos) {
+            let parsedVideos = [];
+
+            try {
+                parsedVideos = JSON.parse(detailMeetings.videos);
+            } catch (e) {
+                console.error("Gagal parsing videos:", e);
+                parsedVideos = [];
             }
-            setVideos(updatedVideos);
+
+            if (Array.isArray(parsedVideos)) {
+                const updatedVideos = parsedVideos.map((video) => ({
+                    vidio: video.key,
+                    title_vid: video.title
+                }));
+                setVideos(updatedVideos);
+                console.log(videos)
+            }
         }
     }, [detailMeetings]);
 
     useEffect(() => {
-        if (detailMeetings) {
-            const updatedMaterials = [];
-            let index = 1;
-            while (detailMeetings[`file_materi${index}`]) {
-                updatedMaterials.push({
-                    materi: detailMeetings[`file_materi${index}`],
-                });
-                index++;
+        if (detailMeetings?.files) {
+            let parsedFiles = [];
+
+            try {
+                parsedFiles = JSON.parse(detailMeetings.files);
+            } catch (e) {
+                console.error("Gagal parsing files:", e);
+                parsedFiles = [];
             }
-            setMaterials(updatedMaterials);
+
+            if (Array.isArray(parsedFiles)) {
+                const updatedMaterials = parsedFiles.map((file) => ({
+                    materi: file.key,
+                    name: file.name,
+                }));
+                setMaterials(updatedMaterials);
+                console.log(materials)
+            }
         }
     }, [detailMeetings]);
-
 
     useEffect(() => {
         document.body.style.overflow = 'hidden';
@@ -77,6 +91,9 @@ export default function DetailClassLayout() {
         <>
             {variants.map((variant) => (
                 <Breadcrumbs underline="active" onAction={(key) => setCurrentPage(key)} key={variant} variant={variant}>
+                    <BreadcrumbItem key="home" href="/">
+                        Home
+                    </BreadcrumbItem>
                     <BreadcrumbItem key="class" href="/class">
                         Class
                     </BreadcrumbItem>
@@ -88,13 +105,27 @@ export default function DetailClassLayout() {
                     </BreadcrumbItem>
                 </Breadcrumbs>
             ))}
-            <div className="grid grid-rows-2 justify-items-center w-full gap-6 lg:grid-cols-1">
-                <div className="w-full pt-6 px-4 lg:px-8 lg:pt-8">
-                    <SummarySection summary={summary} setSummary={setSummary} />
-                    <VideoList videos={videos} />
+            {/* Page Title and Actions */}
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center px-4 lg:px-8 py-6 border-b border-gray-200">
+                <div>
+                    <h1 className="text-3xl font-bold mb-2">Modul Pembelajaran</h1>
                 </div>
-                <div className="w-full max-w-2xl lg:sticky">
+                <div className="flex items-center gap-4 mt-4 lg:mt-0">
                     <MaterialList materials={materials} />
+                    <button className="bg-blue-100 text-blue-700 px-4 py-2 rounded hover:bg-blue-200">RSS</button>
+                    <label className="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" className="sr-only peer" />
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-checked:bg-blue-500 rounded-full"></div>
+                        <span className="ml-2 text-sm text-gray-600">Focus mode</span>
+                    </label>
+                </div>
+            </div>
+
+            {/* Main Content */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 px-4 lg:px-8 py-6">
+                <div className="lg:col-span-9">
+                    {/* <SummarySection summary={summary} setSummary={setSummary} /> */}
+                    <VideoList videos={videos} />
                 </div>
             </div>
         </>

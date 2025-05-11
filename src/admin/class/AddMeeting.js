@@ -107,18 +107,17 @@ export default function AddMeeting() {
         event.preventDefault();
 
         try {
-
             const response = await axios.post('/api/meeting',
                 JSON.stringify({
                     kelasId,
                     tittle: title,
                     description,
-                    videos: JSON.stringify(uploadedVideos.map((v, i) => ({
-                        key: v.key,
-                        title: videoTitles[i] || ""
+                    videos: JSON.stringify(uploadedVideos.map((v) => ({
+                        key: "https://myuploadbrainbridgebucket.s3.us-east-1.amazonaws.com/" + encodeURIComponent(v.key),
+                        title: v.file.name
                     }))),
                     files: JSON.stringify(uploadedFiles.map((f) => ({
-                        key: f.key,
+                        key: "https://myuploadbrainbridgebucket.s3.us-east-1.amazonaws.com/" + encodeURIComponent(f.key),
                         name: f.file.name
                     })))
                 }),
@@ -142,6 +141,9 @@ export default function AddMeeting() {
         <>
             {variants.map((variant) => (
                 <Breadcrumbs underline="active" onAction={(key) => setCurrentPage(key)} key={variant} variant={variant}>
+                    <BreadcrumbItem key="home" href="/">
+                        Home
+                    </BreadcrumbItem>
                     <BreadcrumbItem href="/class">
                         Class
                     </BreadcrumbItem>

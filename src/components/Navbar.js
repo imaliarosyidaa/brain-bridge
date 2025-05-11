@@ -113,7 +113,7 @@ export default function Navbar() {
             >
                 <div className="space-y-1 px-2 pb-3 pt-2">
                     <Link to="/" className="block rounded-md px-3 py-2 text-base font-medium text-[#1E1E1E] hover:bg-slate-100" aria-current="page">Home</Link>
-                    <Link to="/className" className="block rounded-md px-3 py-2 text-base font-medium text-[#1E1E1E] hover:bg-slate-100">Kelas</Link>
+                    <Link to="/class" className="block rounded-md px-3 py-2 text-base font-medium text-[#1E1E1E] hover:bg-slate-100">Kelas</Link>
                     <Link to="/dicussion" className="block rounded-md px-3 py-2 text-base font-medium text-[#1E1E1E] hover:bg-slate-100">Tanya AI</Link>
                     {!isLogin && (
                         <Link to="/signin" className="block rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-slate-100">
