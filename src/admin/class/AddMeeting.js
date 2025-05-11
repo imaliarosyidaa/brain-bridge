@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/axios";
 import { Breadcrumbs, BreadcrumbItem } from "@heroui/breadcrumbs";
+import Tiptap from "../../components/RichTextEditor";
 
 export default function AddMeeting() {
     const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -20,6 +21,7 @@ export default function AddMeeting() {
     const { auth } = useAuth();
     const [currentPage, setCurrentPage] = useState("add meeting");
     const variants = ["light"];
+
 
     useEffect(() => {
         setKelasId(id);
@@ -175,7 +177,7 @@ export default function AddMeeting() {
                 )}
 
                 <form onSubmit={addMeeting} method="POST">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="w-full">
                         <div>
                             <div className="mb-4">
                                 <label htmlFor="title" className="block text-sm font-medium text-gray-600 mb-1">
@@ -196,17 +198,10 @@ export default function AddMeeting() {
                                 <label htmlFor="description" className="block text-sm font-medium text-gray-600 mb-1">
                                     Description
                                 </label>
-                                <textarea
-                                    id="description"
-                                    rows="5"
-                                    value={description}
-                                    onChange={(e) => setDescription(e.target.value)}
-                                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                    placeholder="Enter meeting description here..."
-                                />
+                                <Tiptap description={description} setDescription={setDescription} />
                             </div>
 
-                            <div className="mb-4">
+                            <div className="mb-2">
                                 <label className="block text-sm font-medium text-gray-600">
                                     Upload Videos
                                     <span className="text-red-500">*</span>
@@ -239,7 +234,8 @@ export default function AddMeeting() {
                             </div>
                         </div>
                         <div>
-                            <label className="block font-semibold text-gray-700 mt-4 mb-2">Upload File
+                            <label className="block text-sm font-medium text-gray-600">
+                                Upload File
                                 <span className="text-red-500">*</span>
                             </label>
                             <p className="my-2 text-xs text-gray-500">Only files with formats: PDF, or DOCX are allowed.</p>

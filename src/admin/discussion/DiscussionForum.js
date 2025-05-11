@@ -45,12 +45,7 @@ export default function ChatApp() {
         setUserInput("");
     };
 
-    useEffect(() => {
-        document.body.style.overflow = 'hidden';
-        return () => {
-            document.body.style.overflow = 'auto';
-        };
-    }, []);
+
 
     return (
         <div className="container mx-auto px-4 py-8">

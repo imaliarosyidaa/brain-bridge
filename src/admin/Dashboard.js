@@ -72,10 +72,15 @@ export default function Dashboard() {
     return (
         <>
             <Navbar />
-            <div className="flex h-screen">
+            <div className='block md:hidden'>
                 {sidebar}
-                <main className={`transition-all duration-300 ml-[50vh] flex-1 bg-white`}>
-                    <div className="h-screen container mx-auto p-4 overflow-auto">
+            </div>
+            <div className="grid col-1 md:col-2">
+                <div className='hidden md:block'>
+                    {sidebar}
+                </div>
+                <main className={`md:ml-[50vh] flex-1 bg-white`}>
+                    <div className="h-screen container mx-auto p-4">
                         <Outlet />
                     </div>
                 </main>

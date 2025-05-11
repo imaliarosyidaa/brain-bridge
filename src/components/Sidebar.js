@@ -5,15 +5,26 @@ const SidebarContext = createContext();
 
 export default function Sidebar({ children, expanded, setExpanded }) {
     return (
-        <aside className="h-full overflow-y-auto absolute left-0">
-            <nav
-                className={`h-full flex flex-col bg-[#f8fafc] border-r shadow-sm transition-all duration-300 w-[50vh]`}
-            >
-                <SidebarContext.Provider value={{ expanded, setExpanded }}>
-                    <ul className="flex-1 p-3 space-y-2">{children}</ul>
-                </SidebarContext.Provider>
-            </nav>
-        </aside>
+        <div>
+            <div className="md:hidden ">
+                <nav
+                    className={`h-fit w-full flex flex-col border-r bg-gray-50 shadow-sm`}
+                >
+                    <SidebarContext.Provider value={{ expanded, setExpanded }}>
+                        <ul className="flex-1 p-3 space-y-2">{children}</ul>
+                    </SidebarContext.Provider>
+                </nav>
+            </div>
+            <aside className="md:block hidden h-full overflow-y-auto absolute left-0">
+                <nav
+                    className={`h-full flex flex-col border-r shadow-sm transition-all duration-300 w-[50vh]`}
+                >
+                    <SidebarContext.Provider value={{ expanded, setExpanded }}>
+                        <ul className="flex-1 p-3 space-y-2">{children}</ul>
+                    </SidebarContext.Provider>
+                </nav>
+            </aside>
+        </div>
     );
 }
 

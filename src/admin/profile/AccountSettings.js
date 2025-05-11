@@ -65,13 +65,6 @@ const AccountSettings = () => {
         }
     }
 
-
-    useEffect(() => {
-        document.body.style.overflow = 'hidden';
-        return () => {
-            document.body.style.overflow = 'auto';
-        };
-    }, []);
     return (
         <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg">
             <Tab />

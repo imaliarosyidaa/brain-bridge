@@ -15,23 +15,22 @@ export default function DetailClassLayout({ topic, meetings, assessment }) {
     const variants = ["light"];
 
 
-    useEffect(() => {
-        document.body.style.overflow = 'hidden';
-        return () => {
-            document.body.style.overflow = 'auto';
-        };
-    }, []);
+
     return (
-        <>                        {variants.map((variant) => (
-            <Breadcrumbs underline="active" onAction={(key) => setCurrentPage(key)} key={variant} variant={variant}>
-                <BreadcrumbItem key="class" href="/class">
-                    Class
-                </BreadcrumbItem>
-                <BreadcrumbItem key="class" isCurrent={currentPage === "detail"}>
-                    Class Detail
-                </BreadcrumbItem>
-            </Breadcrumbs>
-        ))}
+        <>
+            {variants.map((variant) => (
+                <Breadcrumbs underline="active" onAction={(key) => setCurrentPage(key)} key={variant} variant={variant}>
+                    <BreadcrumbItem key="home" href="/">
+                        Home
+                    </BreadcrumbItem>
+                    <BreadcrumbItem key="class" href="/class">
+                        Class
+                    </BreadcrumbItem>
+                    <BreadcrumbItem key="class detail" isCurrent={currentPage === "detail"}>
+                        Class Detail
+                    </BreadcrumbItem>
+                </Breadcrumbs>
+            ))}
             <div className="flex flex-row w-full lg:flex-row gap-12">
                 <div className="min-w-0 flex-1 py-8 lg:pl-4 lg:pr-0">
                     <h1 className="font-display text-3xl tracking-tight text-slate-900 dark:text-white capitalize">{topicName}</h1>
